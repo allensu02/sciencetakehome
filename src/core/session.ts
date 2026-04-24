@@ -178,9 +178,6 @@ export class SessionEngine {
   private presentNextTarget(nowMs: number): TargetPresentation {
     if (this.target) {
       this.previousTargets.push(this.target);
-      if (this.previousTargets.length > 120) {
-        this.previousTargets.shift();
-      }
     }
     this.ensureUpcomingTargets();
     this.target = this.upcomingTargets.shift() ?? drawUniform(this.config.alphabet);
