@@ -9,11 +9,11 @@ type StartScreenProps = {
   conditionOptions: ConditionOption[];
   selectedConditionId: string;
   subjectId: string;
-  visualLetterSpacing: boolean;
+  requireSpace: boolean;
   retryBanner: string | null;
   onConditionChange: (conditionId: string) => void;
   onSubjectIdChange: (subjectId: string) => void;
-  onVisualLetterSpacingChange: (enabled: boolean) => void;
+  onRequireSpaceChange: (enabled: boolean) => void;
   onStart: () => void;
   subjectIdError: string | null;
 };
@@ -23,11 +23,11 @@ export function StartScreen({
   conditionOptions,
   selectedConditionId,
   subjectId,
-  visualLetterSpacing,
+  requireSpace,
   retryBanner,
   onConditionChange,
   onSubjectIdChange,
-  onVisualLetterSpacingChange,
+  onRequireSpaceChange,
   onStart,
   subjectIdError
 }: StartScreenProps): JSX.Element {
@@ -77,13 +77,13 @@ export function StartScreen({
 
       <label className="toggle-row">
         <span>
-          <strong>Visual letter spacing</strong>
-          <small>Spaces are visual only; do not press space.</small>
+          <strong>Press space</strong>
+          <small>Require Space after each target to advance.</small>
         </span>
         <input
           type="checkbox"
-          checked={visualLetterSpacing}
-          onChange={(event) => onVisualLetterSpacingChange(event.target.checked)}
+          checked={requireSpace}
+          onChange={(event) => onRequireSpaceChange(event.target.checked)}
         />
       </label>
 

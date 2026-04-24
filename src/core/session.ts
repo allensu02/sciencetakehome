@@ -103,7 +103,8 @@ export class SessionEngine {
       return { ignored: true, started, completed: false, sessionEnded: true };
     }
 
-    const expected = this.target[this.buffer.length];
+    const expectedSequence = this.expectedInputSequence();
+    const expected = expectedSequence[this.buffer.length];
     const isCorrectSymbol = event.symbol === expected;
 
     if (!isCorrectSymbol && this.config.scoring.advance_on_error) {
@@ -145,7 +146,7 @@ export class SessionEngine {
     }
 
     this.buffer += event.symbol;
-    const selectionComplete = this.buffer === this.target;
+    const selectionComplete = this.buffer === expectedSequence;
     const loggedInput: LoggedInput = {
       symbol: event.symbol,
       timestamp_ms: event.timestamp_ms,
@@ -190,6 +191,10 @@ export class SessionEngine {
       target: this.target,
       shown_at_ms: nowMs
     };
+  }
+
+  private expectedInputSequence(): string {
+    return this.config.display.require_space ? `${this.target} ` : this.target;
   }
 
   private ensureUpcomingTargets(): void {

@@ -7,8 +7,8 @@ export class KeyboardHandler implements InputHandler {
     if (event.metaKey || event.ctrlKey || event.altKey) {
       return;
     }
-    const key = event.key.toLowerCase();
-    if (!/^[a-z]$/.test(key)) {
+    const key = event.key === ' ' ? ' ' : event.key.toLowerCase();
+    if (!/^[a-z ]$/.test(key)) {
       return;
     }
     event.preventDefault();

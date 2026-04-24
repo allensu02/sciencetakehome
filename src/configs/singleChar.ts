@@ -12,7 +12,7 @@ export const singleCharConfig: SessionConfig = {
     show_current_target: true,
     show_next_target: false,
     show_keyboard_overlay: false,
-    visual_letter_spacing: true
+    require_space: true
   },
   duration_seconds: 60,
   familiarization_seconds: 20
