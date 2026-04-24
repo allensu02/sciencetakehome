@@ -15,6 +15,7 @@ import { StartScreen } from './StartScreen';
 type Stage = 'consent' | 'start' | 'scored' | 'ended';
 
 const SUBJECT_ID_PATTERN = /^[A-Za-z0-9 _-]{1,20}$/;
+const ERROR_INPUT_LOCKOUT_MS = 150;
 
 export function App(): JSX.Element {
   const isAdminRoute = window.location.pathname === '/admin' || window.location.hash === '#/admin';
@@ -40,6 +41,7 @@ export function App(): JSX.Element {
   const loggerRef = useRef<SessionLogger | null>(null);
   const pendingScoredTargetsRef = useRef<TargetPresentation[]>([]);
   const suppressUntilFrameRef = useRef(false);
+  const ignoreInputUntilMsRef = useRef(0);
   const uploadedSessionRef = useRef<string | null>(null);
 
   const selectedConfig = useMemo(
@@ -70,6 +72,10 @@ export function App(): JSX.Element {
         return;
       }
 
+      if (event.timestamp_ms < ignoreInputUntilMsRef.current) {
+        return;
+      }
+
       const engine = engineRef.current;
       if (!engine) {
         return;
@@ -93,6 +99,7 @@ export function App(): JSX.Element {
       if (result.targetPresentation) {
         handler.expectsTarget(result.targetPresentation.target);
         if (result.selectionCorrect === false && result.failedTarget !== undefined && result.failedIndex !== undefined) {
+          ignoreInputUntilMsRef.current = event.timestamp_ms + ERROR_INPUT_LOCKOUT_MS;
           const failedTargetIndex = result.targetPresentation.index - 1;
           const failedTarget = result.failedTarget;
           const failedIndex = result.failedIndex;
@@ -176,6 +183,7 @@ export function App(): JSX.Element {
     setBitRatePoints([]);
     setUploadStatus({ state: 'idle' });
     uploadedSessionRef.current = null;
+    ignoreInputUntilMsRef.current = 0;
     loggerRef.current = null;
     pendingScoredTargetsRef.current = [];
 
