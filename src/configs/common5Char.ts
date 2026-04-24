@@ -117,7 +117,8 @@ export const common5CharConfig: SessionConfig = {
   display: {
     show_current_target: true,
     show_next_target: false,
-    show_keyboard_overlay: false
+    show_keyboard_overlay: false,
+    visual_letter_spacing: true
   },
   duration_seconds: 60,
   familiarization_seconds: 20

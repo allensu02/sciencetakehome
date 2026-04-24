@@ -25,6 +25,7 @@ export function App(): JSX.Element {
   const mode = useMemo<RuntimeMode>(() => isLocalMode() ? 'local' : 'remote', []);
   const [stage, setStage] = useState<Stage>(mode === 'remote' ? 'consent' : 'start');
   const [selectedConditionId, setSelectedConditionId] = useState(conditionOptions[0].config.condition_id);
+  const [visualLetterSpacing, setVisualLetterSpacing] = useState(true);
   const [subjectId, setSubjectId] = useState(mode === 'remote' ? '' : 'anon');
   const [subjectIdError, setSubjectIdError] = useState<string | null>(null);
   const [snapshot, setSnapshot] = useState<SessionSnapshot | null>(null);
@@ -178,7 +179,13 @@ export function App(): JSX.Element {
     loggerRef.current = null;
     pendingScoredTargetsRef.current = [];
 
-    startScored(selectedConfig);
+    startScored({
+      ...selectedConfig,
+      display: {
+        ...selectedConfig.display,
+        visual_letter_spacing: visualLetterSpacing
+      }
+    });
   };
 
   const startScored = (config: SessionConfig): void => {
@@ -279,12 +286,14 @@ export function App(): JSX.Element {
         conditionOptions={conditionOptions}
         selectedConditionId={selectedConditionId}
         subjectId={subjectId}
+        visualLetterSpacing={visualLetterSpacing}
         retryBanner={retryBanner}
         onConditionChange={setSelectedConditionId}
         onSubjectIdChange={(value) => {
           setSubjectId(value);
           setSubjectIdError(null);
         }}
+        onVisualLetterSpacingChange={setVisualLetterSpacing}
         onStart={start}
         subjectIdError={subjectIdError}
       />

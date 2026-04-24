@@ -14,6 +14,7 @@ export type SessionConfig = {
     show_current_target: boolean;
     show_next_target: boolean;
     show_keyboard_overlay: boolean;
+    visual_letter_spacing: boolean;
   };
   duration_seconds: number;
   familiarization_seconds: number;

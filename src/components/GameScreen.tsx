@@ -30,6 +30,7 @@ export function GameScreen({ snapshot, targetErrors, onEnd }: GameScreenProps): 
   const [fontSizePx, setFontSizePx] = useState(48);
   const streamRef = useRef<HTMLDivElement | null>(null);
   const previousCountRef = useRef(snapshot.previousTargets.length);
+  const visualLetterSpacing = snapshot.config.display.visual_letter_spacing;
 
   useEffect(() => {
     if (snapshot.previousTargets.length < previousCountRef.current) {
@@ -82,7 +83,10 @@ export function GameScreen({ snapshot, targetErrors, onEnd }: GameScreenProps): 
     return () => resizeObserver.disconnect();
   }, []);
 
-  const rows = useMemo(() => buildRows(words, streamWidthPx, fontSizePx), [fontSizePx, streamWidthPx, words]);
+  const rows = useMemo(
+    () => buildRows(words, streamWidthPx, fontSizePx, visualLetterSpacing),
+    [fontSizePx, streamWidthPx, visualLetterSpacing, words]
+  );
   const currentRowIndex = rows.findIndex((row) => row.some((word) => word.kind === 'current'));
 
   useEffect(() => {
@@ -114,6 +118,7 @@ export function GameScreen({ snapshot, targetErrors, onEnd }: GameScreenProps): 
                     kind={word.kind}
                     buffer={word.kind === 'current' ? snapshot.buffer : ''}
                     errorIndex={word.errorIndex}
+                    visualLetterSpacing={visualLetterSpacing}
                   />
                 </span>
               ))}
@@ -129,26 +134,26 @@ function WordToken({
   target,
   kind,
   buffer,
-  errorIndex
+  errorIndex,
+  visualLetterSpacing
 }: {
   target: string;
   kind: 'previous' | 'failed' | 'current' | 'upcoming';
   buffer: string;
   errorIndex?: number;
+  visualLetterSpacing: boolean;
 }): JSX.Element {
   if (kind === 'failed') {
     const index = errorIndex ?? 0;
     return (
       <span className="word-token failed">
-        <span>{target.slice(0, index)}</span>
-        <span className="error-letter">{target.slice(index, index + 1)}</span>
-        <span>{target.slice(index + 1)}</span>
+        {renderLetters(target, visualLetterSpacing, index)}
       </span>
     );
   }
 
   if (kind !== 'current') {
-    return <span className={`word-token ${kind}`}>{target}</span>;
+    return <span className={`word-token ${kind}`}>{renderLetters(target, visualLetterSpacing)}</span>;
   }
 
   const typed = target.slice(0, buffer.length);
@@ -156,11 +161,13 @@ function WordToken({
 
   return (
     <span className="word-token current">
-      <span className="typed">{typed}</span>
+      <span className="typed">{renderLetters(typed, visualLetterSpacing)}</span>
+      {typed && visualLetterSpacing && remaining ? <span className="visual-space"> </span> : null}
       <span className="cursor-slot">
-        {remaining.slice(0, 1)}
+        {renderLetters(remaining.slice(0, 1), visualLetterSpacing)}
       </span>
-      <span>{remaining.slice(1)}</span>
+      {remaining.length > 1 && visualLetterSpacing ? <span className="visual-space"> </span> : null}
+      <span>{renderLetters(remaining.slice(1), visualLetterSpacing)}</span>
     </span>
   );
 }
@@ -169,7 +176,7 @@ function formatSeconds(seconds: number): string {
   return Math.ceil(seconds).toString().padStart(2, '0');
 }
 
-function buildRows(words: StreamWord[], streamWidthPx: number, fontSizePx: number): StreamWord[][] {
+function buildRows(words: StreamWord[], streamWidthPx: number, fontSizePx: number, visualLetterSpacing: boolean): StreamWord[][] {
   if (streamWidthPx <= 0) {
     return [words];
   }
@@ -180,7 +187,7 @@ function buildRows(words: StreamWord[], streamWidthPx: number, fontSizePx: numbe
   let currentWidthEm = 0;
 
   for (const word of words) {
-    const wordWidthEm = word.target.length * APPROX_CHAR_WIDTH_EM;
+    const wordWidthEm = renderedLength(word.target, visualLetterSpacing) * APPROX_CHAR_WIDTH_EM;
     const nextWidthEm = currentRow.length === 0
       ? wordWidthEm
       : currentWidthEm + WORD_GAP_EM + wordWidthEm;
@@ -200,4 +207,34 @@ function buildRows(words: StreamWord[], streamWidthPx: number, fontSizePx: numbe
   }
 
   return rows;
+}
+
+function renderLetters(target: string, visualLetterSpacing: boolean, errorIndex?: number): JSX.Element[] | string {
+  if (!visualLetterSpacing) {
+    if (errorIndex === undefined) {
+      return target;
+    }
+    return [
+      <span key="before">{target.slice(0, errorIndex)}</span>,
+      <span className="error-letter" key="error">{target.slice(errorIndex, errorIndex + 1)}</span>,
+      <span key="after">{target.slice(errorIndex + 1)}</span>
+    ];
+  }
+
+  return target.split('').flatMap((letter, index) => {
+    const nodes: JSX.Element[] = [
+      <span className={index === errorIndex ? 'error-letter' : undefined} key={`letter-${index}`}>{letter}</span>
+    ];
+    if (index < target.length - 1) {
+      nodes.push(<span className="visual-space" key={`space-${index}`}> </span>);
+    }
+    return nodes;
+  });
+}
+
+function renderedLength(target: string, visualLetterSpacing: boolean): number {
+  if (!visualLetterSpacing) {
+    return target.length;
+  }
+  return target.length === 0 ? 0 : target.length * 2 - 1;
 }

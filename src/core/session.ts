@@ -2,6 +2,7 @@ import { drawUniform } from './rng';
 import type { BitRatePoint, InputEvent, LoggedInput, SessionConfig, TargetPresentation } from '../types';
 
 export type SessionSnapshot = {
+  config: SessionConfig;
   currentTarget: string;
   currentTargetIndex: number;
   previousTargets: string[];
@@ -60,6 +61,7 @@ export class SessionEngine {
       : Math.max(this.config.duration_seconds - elapsedSeconds, 0);
 
     return {
+      config: this.config,
       currentTarget: this.target,
       currentTargetIndex: this.targetIndex,
       previousTargets: [...this.previousTargets],
