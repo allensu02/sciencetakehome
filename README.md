@@ -1,0 +1,121 @@
+# BCI Bit-Rate Evaluation Game
+
+Static React + TypeScript implementation of the Science Corporation bit-rate take-home. The shipped app runs entirely in the browser during gameplay. Targets are sampled i.i.d. uniform with replacement from a configured alphabet, and bit rate is computed as:
+
+```text
+B = log2(N - 1) * max(Sc - Si, 0) / t
+```
+
+## Run Locally
+
+Graders only need Python 3:
+
+```bash
+./run.sh
+```
+
+`run.sh` serves the committed `dist/` directory on `http://localhost:8000`. Local mode is detected when `window.location.hostname` is `localhost` or `127.0.0.1`; logs are downloaded manually from the end screen.
+
+## Rebuild
+
+Development requires Node/npm:
+
+```bash
+npm install
+./build.sh
+```
+
+`src/` contains the TypeScript source. `dist/` contains the compiled static app and is committed for no-build local grading.
+
+## Conditions
+
+- Single characters: `N=26`, lowercase `a-z`.
+- 3-char common words: `N=100`, curated common English words.
+- 3-char pronounceable nonwords: `N=500`, generated CVC strings.
+- 5-char common words: `N=1000`, frequency-ordered from `first20hours/google-10000-english`, filtered to lowercase 5-letter entries.
+
+The homework says "no word-level targets." This implementation treats fixed-length strings drawn i.i.d. uniform from a fixed alphabet, scored only by whole-string exact match, as compliant because the selection sequence has no language-model statistics and no predictive/partial-word credit.
+
+## Architecture
+
+- `src/core/session.ts`: pure session state machine, scoring, timing, bit-rate math.
+- `src/core/rng.ts`: `crypto.getRandomValues` uniform draws with replacement.
+- `src/input/`: keyboard handler plus voice/head-tracking stubs.
+- `src/configs/`: four typed condition configs and static alphabets.
+- `src/logging/SessionLogger.ts`: typed session log assembly.
+- `src/logging/LogUploader.ts`: Supabase upload, pending-log localStorage fallback, retry.
+- `src/audit/audit.ts`: 100k-draw chi-squared and lag-1 serial-correlation audit.
+- `src/components/`: consent, start, gameplay, and end-report screens.
+
+## Remote Deployment
+
+Remote mode is active for any hostname other than `localhost` or `127.0.0.1`.
+
+1. Create a Supabase project.
+2. Run the SQL below in the Supabase SQL editor.
+3. Copy `.env.example` to `.env` locally, or set these env vars in Vercel/Netlify:
+
+```text
+PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+PUBLIC_SUPABASE_ANON_KEY=your-public-anon-key
+```
+
+4. Build with `./build.sh`.
+5. Deploy the static `dist/` directory to Vercel or Netlify.
+
+Recommended Vercel settings:
+
+```text
+Build command: npm install && ./build.sh
+Output directory: dist
+Environment variables: PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY
+```
+
+Recommended Netlify settings:
+
+```text
+Build command: npm install && ./build.sh
+Publish directory: dist
+Environment variables: PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY
+```
+
+## Supabase SQL
+
+```sql
+create extension if not exists pgcrypto;
+
+create table public.session_logs (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  log jsonb not null
+);
+
+alter table public.session_logs enable row level security;
+
+create policy "Anyone can insert session logs"
+on public.session_logs
+for insert
+to anon
+with check (true);
+```
+
+Do not add an anon `SELECT` policy. Read logs only from the Supabase dashboard or a trusted server-side script using the service role key.
+
+## Remote Logging Behavior
+
+No network calls happen during scored gameplay. At the end of a scored remote session:
+
+1. The completed log is written to `localStorage` as `pending_log_<session_id>`.
+2. The app attempts to insert `{ log }` into `public.session_logs`.
+3. It silently retries twice.
+4. On success, the pending local copy is removed and a confirmation is shown.
+5. On failure, the pending local copy remains, a retry state is shown, and a download fallback appears.
+
+On page load in remote mode, pending logs are retried quietly. If any retry fails, the start screen shows a small banner.
+
+## Privacy Notes
+
+The app payload contains only the session log: subject ID, condition/config, target presentations, task keystrokes, task timestamps, and final metrics. It does not add IP address, user agent, browser fingerprint, audio, video, or any text outside the subject ID.
+
+Hosting providers and Supabase may keep platform-level request logs such as IP addresses or user agents by default, outside this app's JSON payload. Review Vercel/Netlify/Supabase retention settings if that matters for the study.
+# sciencetakehome
