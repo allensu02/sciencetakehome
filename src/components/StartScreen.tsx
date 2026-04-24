@@ -50,7 +50,7 @@ export function StartScreen({
 
       <fieldset className="conditions">
         <legend>Condition</legend>
-        {conditionOptions.map((option) => (
+        {conditionOptions.map((option, index) => (
           <label className="condition" key={option.config.condition_id}>
             <input
               type="radio"
@@ -59,7 +59,7 @@ export function StartScreen({
               checked={option.config.condition_id === selectedConditionId}
               onChange={() => onConditionChange(option.config.condition_id)}
             />
-            <span>{option.label}</span>
+            <span>{index + 1}. {option.label}</span>
           </label>
         ))}
       </fieldset>
