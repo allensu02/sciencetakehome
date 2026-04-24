@@ -31,10 +31,14 @@ npm install
 
 - Single characters: `N=26`, lowercase `a-z`.
 - 3-char common words: `N=100`, curated common English words.
+- 3-char ergonomic words: `N=100`, common lowercase words selected for low QWERTY typing effort.
 - 3-char pronounceable nonwords: `N=500`, generated CVC strings.
 - 5-char common words: `N=1000`, frequency-ordered from `first20hours/google-10000-english`, filtered to lowercase 5-letter entries.
+- 5-char ergonomic words: `N=1000`, selected from the 5-letter `first20hours/google-10000-english` pool by a QWERTY effort model.
 
 The homework says "no word-level targets." This implementation treats fixed-length strings drawn i.i.d. uniform from a fixed alphabet, scored only by whole-string exact match, as compliant because the selection sequence has no language-model statistics and no predictive/partial-word credit.
+
+The ergonomic lists are still fixed alphabets sampled uniformly with replacement. They are ranked by a deterministic QWERTY model that rewards home-row use, hand alternation, and inward rolls while penalizing weak fingers, same-finger transitions, and row jumps.
 
 ## Architecture
 
