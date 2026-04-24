@@ -7,6 +7,7 @@ declare const PUBLIC_SUPABASE_ANON_KEY: string;
 const PENDING_PREFIX = 'pending_log_';
 
 let client: SupabaseClient | null = null;
+let adminClient: SupabaseClient | null = null;
 
 export function isLocalMode(hostname = window.location.hostname): boolean {
   return hostname === 'localhost' || hostname === '127.0.0.1';
@@ -106,4 +107,20 @@ function getClient(): SupabaseClient | null {
     });
   }
   return client;
+}
+
+export function getAdminClient(): SupabaseClient | null {
+  if (!PUBLIC_SUPABASE_URL || !PUBLIC_SUPABASE_ANON_KEY) {
+    return null;
+  }
+  if (adminClient === null) {
+    adminClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true
+      }
+    });
+  }
+  return adminClient;
 }

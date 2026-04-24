@@ -6,6 +6,7 @@ import { KeyboardHandler } from '../input/KeyboardHandler';
 import { completeUpload, isLocalMode, retryPendingLogs } from '../logging/LogUploader';
 import { SessionLogger } from '../logging/SessionLogger';
 import type { BitRatePoint, RuntimeMode, SessionConfig, SessionLog, TargetPresentation, UploadStatus } from '../types';
+import { AdminDashboard } from './AdminDashboard';
 import { ConsentScreen } from './ConsentScreen';
 import { EndScreen } from './EndScreen';
 import { GameScreen, type TargetError } from './GameScreen';
@@ -16,6 +17,11 @@ type Stage = 'consent' | 'start' | 'scored' | 'ended';
 const SUBJECT_ID_PATTERN = /^[A-Za-z0-9 _-]{1,20}$/;
 
 export function App(): JSX.Element {
+  const isAdminRoute = window.location.pathname === '/admin' || window.location.hash === '#/admin';
+  if (isAdminRoute) {
+    return <AdminDashboard />;
+  }
+
   const mode = useMemo<RuntimeMode>(() => isLocalMode() ? 'local' : 'remote', []);
   const [stage, setStage] = useState<Stage>(mode === 'remote' ? 'consent' : 'start');
   const [selectedConditionId, setSelectedConditionId] = useState(conditionOptions[0].config.condition_id);

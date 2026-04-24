@@ -1,0 +1,12 @@
+{
+  "framework": null,
+  "installCommand": "npm install",
+  "buildCommand": "npm install && ./build.sh",
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/admin",
+      "destination": "/"
+    }
+  ]
+}

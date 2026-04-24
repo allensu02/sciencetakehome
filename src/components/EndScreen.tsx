@@ -72,7 +72,7 @@ function UploadMessage({ status, onRetryUpload }: { status: UploadStatus; onRetr
   return <div className="banner">Preparing upload...</div>;
 }
 
-function BitRateChart({ points }: { points: BitRatePoint[] }): JSX.Element {
+export function BitRateChart({ points }: { points: BitRatePoint[] }): JSX.Element {
   const width = 760;
   const height = 240;
   const pad = 36;

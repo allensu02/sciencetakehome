@@ -99,7 +99,42 @@ to anon
 with check (true);
 ```
 
-Do not add an anon `SELECT` policy. Read logs only from the Supabase dashboard or a trusted server-side script using the service role key.
+Do not add an anon `SELECT` policy.
+
+## Admin Dashboard
+
+The deployed app includes an admin dashboard at:
+
+```text
+https://your-deployment.vercel.app/admin
+```
+
+The dashboard uses Supabase Auth and RLS. Public users can insert logs, but only your authenticated admin email can read them.
+
+Add this policy in Supabase SQL Editor, replacing the email:
+
+```sql
+create policy "Only admin can read session logs"
+on public.session_logs
+for select
+to authenticated
+using (
+  auth.jwt() ->> 'email' = 'YOUR_EMAIL@example.com'
+);
+```
+
+Supabase Auth setup:
+
+1. Go to Authentication -> Providers and make sure Email is enabled.
+2. Go to Authentication -> URL Configuration.
+3. Set Site URL to your deployed app URL.
+4. Add this Redirect URL:
+
+```text
+https://your-deployment.vercel.app/admin
+```
+
+Then open `/admin`, enter the admin email, and use the magic link. The dashboard groups sessions by trimmed `subject_id`, lists readable Pacific-time session dates, and shows the same bit-rate-over-time chart style used on the participant result screen.
 
 ## Remote Logging Behavior
 
@@ -118,4 +153,3 @@ On page load in remote mode, pending logs are retried quietly. If any retry fail
 The app payload contains only the session log: subject ID, condition/config, target presentations, task keystrokes, task timestamps, and final metrics. It does not add IP address, user agent, browser fingerprint, audio, video, or any text outside the subject ID.
 
 Hosting providers and Supabase may keep platform-level request logs such as IP addresses or user agents by default, outside this app's JSON payload. Review Vercel/Netlify/Supabase retention settings if that matters for the study.
-# sciencetakehome
