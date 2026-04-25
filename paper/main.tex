@@ -1,0 +1,158 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\title{Maximizing First-Session Bit Rate with Short Nonword Targets}
+\author{Allen Su}
+\date{April 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report describes a 60-second browser task designed to maximize achieved bit rate under the Science Corporation SWE homework constraints. The task presents targets sampled independently and uniformly with replacement from a fixed alphabet, records exact-match selections, and reports bit rate as
+\[
+B = \frac{\log_2(N - 1)\max(S_c - S_i, 0)}{t}.
+\]
+I implemented and iteratively refined the task interface, input handling, logging pipeline, and target alphabets, then ran a small pilot study over 11 candidate conditions. The deployed final task is available at \url{https://sciencetakehome.vercel.app}. Across five subjects who completed all current conditions, real three-character words achieved the highest observed bit rate (mean 8.28 bps), but word targets are not appropriate for the final task constraint. Among nonword conditions, the strongest valid condition was a three-character nonword alphabet with \(N=16009\), which achieved 7.08 bps mean and 6.98 bps median. I therefore select three-character nonword targets as the final submission task: they preserve fast first-session typing while providing a large enough alphabet to carry substantially more information per correct selection than single letters.
+\end{abstract}
+
+\section{Goal}
+
+The assignment is to build a game that maximizes achieved human bit rate in a single 60-second evaluation. The important design constraint is not just speed: targets must be sampled i.i.d. uniformly with replacement from a fixed alphabet of size \(N \geq 3\). The sequence cannot contain exploitable patterns, predictive structure, language-model statistics, or word-level assistance.
+
+This creates a direct engineering tradeoff. Larger \(N\) increases bits per correct selection through \(\log_2(N-1)\), but difficult targets reduce the number of correct selections \(S_c\) and increase incorrect selections \(S_i\). The best task is therefore not necessarily the task with the largest alphabet. It is the task that maximizes the product of information per target and first-session human throughput.
+
+\section{Final Task}
+
+The final selected task uses fixed-length, three-character nonword targets. The alphabet contains all lowercase three-character strings after excluding real words and common word-list entries, giving
+\[
+N = 16009.
+\]
+Each trial displays one target string. The player types the target followed by space. A correct completed string increments \(S_c\); an incorrect key advances immediately to the next target and increments \(S_i\). Targets are sampled uniformly with replacement from the fixed alphabet, and future targets do not depend on prior targets, user behavior, correctness, timing, or any language model.
+
+This condition is a compromise between two useful extremes:
+\begin{itemize}
+  \item Single letters are extremely fast but have only \(N=26\), so each correct selection carries only \(\log_2(25)\approx4.64\) bits.
+  \item Very large five-character nonword alphabets carry many bits per selection, but the longer targets substantially reduce selections per minute.
+\end{itemize}
+For three-character nonwords with \(N=16009\), each correct selection carries \(\log_2(16008)\approx13.97\) bits, while the target remains short enough for first-session keyboard typing.
+
+\section{Implementation}
+
+The system is a TypeScript/React web app with a pure session engine. The engine owns target generation, input matching, score accounting, timing, and bit-rate computation. The UI displays a continuous stream of previous, current, and upcoming targets, with a running bit-rate readout updated during the session.
+
+The final scored session lasts exactly 60 seconds. Timing starts on the first keystroke, not on page load, so the participant can visually orient before the scored window begins. At the end of the session the app reports \(N\), \(S_c\), \(S_i\), and final bit rate.
+
+For remote pilot collection, the app uploads completed JSON logs to Supabase. Each log contains the subject ID, condition ID, selected configuration, target presentations, task keystrokes, timestamps, and final metrics. An authenticated admin dashboard reads the logs, groups them by subject, and reconstructs bit-rate-over-time curves.
+
+\section{Interface Iteration}
+
+The final task was not the first version. The app evolved through several iterations driven by pilot observations and implementation constraints.
+
+\paragraph{Continuous target stream.}
+The first interface showed a typing stream with past, current, and upcoming targets. Early in development I removed a cap on stored previous targets so the UI and logs could preserve the full session history. This made the task easier to inspect after a run and avoided losing context during long fast sessions.
+
+\paragraph{Remote logging and review.}
+I added Supabase logging and an admin dashboard once the task became an empirical design search rather than a single static game. This made it possible to compare conditions across users, inspect sessions, and avoid relying on manual downloads.
+
+\paragraph{Target boundary handling.}
+I briefly experimented with visual letter spacing, where letters were displayed with added visual separation but users did not type spaces. This made the display more complex without solving the main ambiguity. I replaced it with an explicit required-space delimiter. The player now types each target followed by space, which makes target completion unambiguous for both the user and the scoring engine.
+
+\paragraph{Error lockout.}
+During informal pilots, an incorrect key sometimes caused a cascade: the app advanced to the next target immediately, and the user's next keystroke could land on the new target before they had visually recovered. I added a 150 ms input lockout after an incorrect advancing error. This preserves the scoring rule while preventing one motor slip from creating multiple accidental errors.
+
+\paragraph{Alphabet search.}
+The initial alphabets were single characters, common three-character words, pronounceable nonwords, and common five-character words. I then added a QWERTY ergonomic scoring model that rewards home-row use, hand alternation, and inward rolls while penalizing weak fingers, same-finger transitions, and row jumps. This produced ergonomic word and nonword subsets. Finally, I expanded the condition set to include full three-character and large five-character nonword alphabets so the pilot could measure the information-throughput tradeoff directly.
+
+\section{Pilot Evaluation}
+
+The Supabase database contains 107 session rows across 14 subject IDs. Because the condition set evolved during development, the cleanest analysis uses the five subjects who completed all 11 current conditions. Each condition was a 60-second scored session. For subjects with repeated runs of a condition, I used the latest run for that subject-condition pair.
+
+The 11 current conditions span characters, real words, and nonwords:
+\begin{itemize}
+  \item single characters;
+  \item three-character common words;
+  \item all three-character real words;
+  \item three-character nonwords at \(N=100\), \(N=1000\), and \(N=16009\);
+  \item five-character common words;
+  \item all five-character real words;
+  \item five-character nonwords at \(N=1000\), \(N=100000\), and \(N=11871011\).
+\end{itemize}
+
+\section{Results}
+
+Table~\ref{tab:results} summarizes the complete-subject analysis. The real-word three-character condition achieved the highest raw bit rate, but the best nonword condition was the full three-character nonword alphabet.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{lrrrrrr}
+\toprule
+Condition & \(N\) & Mean bps & Median bps & Mean \(S_c\) & Mean \(S_i\) & Accuracy \\
+\midrule
+Single characters & 26 & 6.16 & 6.66 & 84.4 & 4.8 & 95.8\% \\
+3-char common words & 100 & 6.56 & 6.41 & 68.4 & 9.0 & 88.2\% \\
+3-char all words & 1567 & 8.28 & 9.02 & 53.4 & 6.6 & 89.8\% \\
+3-char nonwords & 100 & 3.43 & 3.43 & 36.4 & 5.4 & 88.5\% \\
+3-char nonwords & 1000 & 4.75 & 4.48 & 35.8 & 7.2 & 86.5\% \\
+3-char nonwords & 16009 & 7.08 & 6.98 & 37.0 & 6.6 & 86.3\% \\
+5-char common words & 1000 & 5.25 & 5.31 & 40.8 & 9.2 & 81.7\% \\
+5-char all words & 10365 & 5.07 & 6.23 & 33.4 & 10.6 & 77.1\% \\
+5-char nonwords & 1000 & 3.22 & 3.65 & 25.8 & 6.4 & 82.9\% \\
+5-char nonwords & 100000 & 4.26 & 4.43 & 20.0 & 4.6 & 83.2\% \\
+5-char nonwords & 11871011 & 5.80 & 6.27 & 19.2 & 4.4 & 83.6\% \\
+\bottomrule
+\end{tabular}
+\caption{Pilot results for the five subjects who completed all current conditions. Accuracy is \(S_c/(S_c+S_i)\).}
+\label{tab:results}
+\end{table}
+
+The highest observed bit rate came from all three-character real words. This condition ranked first for four of five complete subjects and ranked in the top three for all five. This is useful as an empirical ceiling: lexical familiarity helps substantially.
+
+However, the final task should avoid word targets. Among nonword conditions, \(N=16009\) three-character nonwords performed best. It achieved 7.08 bps mean, 6.98 bps median, and an average within-subject rank of 3.0. It also had the best nonword rank profile: it was first overall for one subject and top-three overall for three of five subjects.
+
+The five-character conditions show why maximizing \(N\) alone is not enough. The largest five-character nonword alphabet has \(N=11871011\), which gives \(\log_2(N-1)\approx23.5\) bits per correct target. But participants completed only 19.2 correct selections on average, so its mean bit rate was 5.80 bps. In contrast, the three-character nonword condition has fewer bits per target but nearly twice as many correct selections.
+
+\section{Why Not Use Real Words?}
+
+The all-words condition is the strongest raw performer, but it is not the right final task. The homework explicitly rules out word-level targets and exploitable language structure. Real words are easier because humans bring prior language familiarity, chunking, and motor memory. That advantage is exactly what makes the result scientifically interesting, but it also makes the condition less appropriate as the final submission.
+
+I therefore treat real-word conditions as controls:
+\begin{itemize}
+  \item common words measure performance with a small familiar alphabet;
+  \item all three-character words estimate the upper bound from lexical familiarity;
+  \item nonwords measure performance when lexical familiarity is removed.
+\end{itemize}
+
+Under that interpretation, the final task should use nonwords even though real words scored higher in the pilot.
+
+\section{Final Selection}
+
+I select the three-character nonword condition with \(N=16009\) for the final task. It is the best valid balance of target length and alphabet size:
+\begin{itemize}
+  \item It avoids real word targets.
+  \item It uses a fixed alphabet sampled uniformly with replacement.
+  \item It has no adaptive sequencing or predictive text.
+  \item It preserves short, quickly learnable keyboard actions.
+  \item It outperforms all other nonword conditions in the complete-subject pilot.
+\end{itemize}
+
+The central result is that first-session bit rate is limited more by human target execution than by theoretical alphabet entropy. Three-character nonwords sit near the useful point on that curve: large enough to make each correct target valuable, but short enough that users can still complete many targets in 60 seconds.
+
+\section{Limitations}
+
+The pilot sample is small, with only five complete subjects for the current 11-condition comparison. The condition set also evolved over time, so earlier subjects did not see all final conditions. Orders were not fully counterbalanced, though the complete subjects did not all run the conditions in the same order. The participants were not the Science Corporation grading panel, so the final score may differ, especially for a very fast typist.
+
+The nonword alphabet depends on dictionary and frequency-list exclusion. Some obscure real words may remain, and some excluded strings may not be familiar to most users. For the purposes of the task, the important property is that the target alphabet is fixed, nonadaptive, and sampled uniformly; nevertheless, the exact word-exclusion procedure should be documented.
+
+Finally, the current pilot data are quantitative logs only. Session recordings could add useful qualitative evidence about visual confusion, recovery after errors, and fatigue, but I did not use them in the numerical analysis above.
+
+\section{Conclusion}
+
+The best raw pilot condition was all three-character words, but the best compliant final task is three-character nonwords with \(N=16009\). This condition maintains the assignment's i.i.d. fixed-alphabet requirement while achieving the strongest nonword bit rate observed in the pilot. The result supports a simple design principle: for first-session human bit-rate tasks, short targets with a moderately large nonword alphabet outperform both low-entropy single-character tasks and very large but slow five-character alphabets.
+
+\end{document}

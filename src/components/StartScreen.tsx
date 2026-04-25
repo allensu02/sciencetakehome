@@ -11,6 +11,9 @@ type StartScreenProps = {
   subjectId: string;
   requireSpace: boolean;
   retryBanner: string | null;
+  showConditionPicker?: boolean;
+  showRequireSpaceToggle?: boolean;
+  showAudit?: boolean;
   onConditionChange: (conditionId: string) => void;
   onSubjectIdChange: (subjectId: string) => void;
   onRequireSpaceChange: (enabled: boolean) => void;
@@ -25,6 +28,9 @@ export function StartScreen({
   subjectId,
   requireSpace,
   retryBanner,
+  showConditionPicker = true,
+  showRequireSpaceToggle = true,
+  showAudit = true,
   onConditionChange,
   onSubjectIdChange,
   onRequireSpaceChange,
@@ -48,21 +54,23 @@ export function StartScreen({
         Timer starts on your first keystroke. Targets are sampled i.i.d. uniform with replacement.
       </p>
 
-      <fieldset className="conditions">
-        <legend>Condition</legend>
-        {conditionOptions.map((option, index) => (
-          <label className="condition" key={option.config.condition_id}>
-            <input
-              type="radio"
-              name="condition"
-              value={option.config.condition_id}
-              checked={option.config.condition_id === selectedConditionId}
-              onChange={() => onConditionChange(option.config.condition_id)}
-            />
-            <span>{index + 1}. {option.label}</span>
-          </label>
-        ))}
-      </fieldset>
+      {showConditionPicker && (
+        <fieldset className="conditions">
+          <legend>Condition</legend>
+          {conditionOptions.map((option, index) => (
+            <label className="condition" key={option.config.condition_id}>
+              <input
+                type="radio"
+                name="condition"
+                value={option.config.condition_id}
+                checked={option.config.condition_id === selectedConditionId}
+                onChange={() => onConditionChange(option.config.condition_id)}
+              />
+              <span>{index + 1}. {option.label}</span>
+            </label>
+          ))}
+        </fieldset>
+      )}
 
       <label className="field">
         <span>Subject ID {mode === 'remote' ? '(required)' : ''}</span>
@@ -75,24 +83,26 @@ export function StartScreen({
       </label>
       {subjectIdError && <p className="error">{subjectIdError}</p>}
 
-      <label className="toggle-row">
-        <span>
-          <strong>Press space</strong>
-          <small>Require Space after each target to advance.</small>
-        </span>
-        <input
-          type="checkbox"
-          checked={requireSpace}
-          onChange={(event) => onRequireSpaceChange(event.target.checked)}
-        />
-      </label>
+      {showRequireSpaceToggle && (
+        <label className="toggle-row">
+          <span>
+            <strong>Press space</strong>
+            <small>Require Space after each target to advance.</small>
+          </span>
+          <input
+            type="checkbox"
+            checked={requireSpace}
+            onChange={(event) => onRequireSpaceChange(event.target.checked)}
+          />
+        </label>
+      )}
 
       <div className="actions">
         <button className="primary" onClick={onStart}>Start</button>
-        <button className="secondary" onClick={runAudit}>Run i.i.d. audit</button>
+        {showAudit && <button className="secondary" onClick={runAudit}>Run i.i.d. audit</button>}
       </div>
 
-      <AuditOutput selectedConfig={selectedConfig} />
+      {showAudit && <AuditOutput selectedConfig={selectedConfig} />}
     </main>
   );
 }

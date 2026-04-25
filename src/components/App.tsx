@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { conditionOptions } from '../configs';
+import { ergonomicNonword3CharAllConfig } from '../configs/ergonomicNonword3Char';
 import { alphabetSize } from '../core/alphabet';
 import { SessionEngine, type SessionSnapshot } from '../core/session';
 import { KeyboardHandler } from '../input/KeyboardHandler';
@@ -17,6 +18,11 @@ type Stage = 'consent' | 'start' | 'scored' | 'ended';
 
 const SUBJECT_ID_PATTERN = /^[A-Za-z0-9 _-]{1,20}$/;
 const ERROR_INPUT_LOCKOUT_MS = 150;
+const FINAL_CONDITION_ID = 'three_char_ergonomic_nonwords_n16009';
+const finalConditionOption = {
+  label: '3-char non-words (N=16009)',
+  config: ergonomicNonword3CharAllConfig
+};
 
 export function App(): JSX.Element {
   const isAdminRoute = window.location.pathname === '/admin' || window.location.hash === '#/admin';
@@ -24,9 +30,13 @@ export function App(): JSX.Element {
     return <AdminDashboard />;
   }
 
+  const isUxTestRoute = window.location.pathname === '/uxtest' || window.location.hash === '#/uxtest';
+  const activeConditionOptions = isUxTestRoute ? conditionOptions : [finalConditionOption];
   const mode = useMemo<RuntimeMode>(() => isLocalMode() ? 'local' : 'remote', []);
-  const [stage, setStage] = useState<Stage>(mode === 'remote' ? 'consent' : 'start');
-  const [selectedConditionId, setSelectedConditionId] = useState(conditionOptions[0].config.condition_id);
+  const [stage, setStage] = useState<Stage>(isUxTestRoute && mode === 'remote' ? 'consent' : 'start');
+  const [selectedConditionId, setSelectedConditionId] = useState(
+    isUxTestRoute ? conditionOptions[0].config.condition_id : FINAL_CONDITION_ID
+  );
   const [requireSpace, setRequireSpace] = useState(true);
   const [subjectId, setSubjectId] = useState(mode === 'remote' ? '' : 'anon');
   const [subjectIdError, setSubjectIdError] = useState<string | null>(null);
@@ -46,8 +56,9 @@ export function App(): JSX.Element {
   const uploadedSessionRef = useRef<string | null>(null);
 
   const selectedConfig = useMemo(
-    () => conditionOptions.find((option) => option.config.condition_id === selectedConditionId)?.config ?? conditionOptions[0].config,
-    [selectedConditionId]
+    () => activeConditionOptions.find((option) => option.config.condition_id === selectedConditionId)?.config
+      ?? activeConditionOptions[0].config,
+    [activeConditionOptions, selectedConditionId]
   );
 
   useEffect(() => {
@@ -292,11 +303,14 @@ export function App(): JSX.Element {
     return (
       <StartScreen
         mode={mode}
-        conditionOptions={conditionOptions}
+        conditionOptions={activeConditionOptions}
         selectedConditionId={selectedConditionId}
         subjectId={subjectId}
         requireSpace={requireSpace}
         retryBanner={retryBanner}
+        showConditionPicker={isUxTestRoute}
+        showRequireSpaceToggle={isUxTestRoute}
+        showAudit={isUxTestRoute}
         onConditionChange={setSelectedConditionId}
         onSubjectIdChange={(value) => {
           setSubjectId(value);
