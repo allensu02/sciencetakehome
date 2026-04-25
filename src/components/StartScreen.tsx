@@ -53,6 +53,9 @@ export function StartScreen({
       <p className="lead">
         Timer starts on your first keystroke. Targets are sampled i.i.d. uniform with replacement.
       </p>
+      <p className="instruction-note">
+        Type each target, then press Space before starting the next one.
+      </p>
 
       {showConditionPicker && (
         <fieldset className="conditions">
@@ -73,12 +76,12 @@ export function StartScreen({
       )}
 
       <label className="field">
-        <span>Subject ID {mode === 'remote' ? '(required)' : ''}</span>
+        <span>Name {mode === 'remote' ? '(required)' : ''}</span>
         <input
           value={subjectId}
           maxLength={20}
           onChange={(event) => onSubjectIdChange(event.target.value)}
-          placeholder={mode === 'remote' ? 'e.g. subject-01' : 'anon'}
+          placeholder={mode === 'remote' ? 'e.g. Alex' : 'anon'}
         />
       </label>
       {subjectIdError && <p className="error">{subjectIdError}</p>}

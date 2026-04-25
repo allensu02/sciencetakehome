@@ -3,6 +3,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath}
 \usepackage{booktabs}
+\usepackage{graphicx}
 \usepackage{hyperref}
 
 \title{Maximizing First-Session Bit Rate with Short Nonword Targets}
@@ -54,13 +55,24 @@ For remote pilot collection, the app uploads completed JSON logs to Supabase. Ea
 The final task was not the first version. The app evolved through several iterations driven by pilot observations and implementation constraints.
 
 \paragraph{Continuous target stream.}
-The first interface showed a typing stream with past, current, and upcoming targets. Early in development I removed a cap on stored previous targets so the UI and logs could preserve the full session history. This made the task easier to inspect after a run and avoided losing context during long fast sessions.
+The earliest interface presented literally one target on the screen at a time. In pilots, this made the task feel like a sequence of isolated reactions: participants had to finish one target, wait for the next visual target to appear, reacquire it, and then begin typing again. I changed the interface to feel more like a typing test, inspired by Monkeytype, where the current target is highlighted in a continuous stream and upcoming targets are already visible. This lets participants keep their eyes in one stable region and prepare the next target while finishing the current one.
+
+\begin{figure}[ht]
+\centering
+\IfFileExists{figures/typing_stream.jpg}{%
+  \includegraphics[width=\linewidth]{figures/typing_stream.jpg}%
+}{%
+  \fbox{\parbox{0.86\linewidth}{\centering Screenshot placeholder. Save the continuous target stream screenshot as \texttt{paper/figures/typing\_stream.jpg} to include it here.}}%
+}
+\caption{Monkeytype-inspired continuous target stream. The current target is highlighted while upcoming targets remain visible, reducing visual reacquisition between selections.}
+\label{fig:typing-stream}
+\end{figure}
 
 \paragraph{Remote logging and review.}
 I added Supabase logging and an admin dashboard once the task became an empirical design search rather than a single static game. This made it possible to compare conditions across users, inspect sessions, and avoid relying on manual downloads.
 
 \paragraph{Target boundary handling.}
-I briefly experimented with visual letter spacing, where letters were displayed with added visual separation but users did not type spaces. This made the display more complex without solving the main ambiguity. I replaced it with an explicit required-space delimiter. The player now types each target followed by space, which makes target completion unambiguous for both the user and the scoring engine.
+I briefly experimented with visual letter spacing, where letters were displayed with added visual separation but users did not type spaces. This made the display more complex without solving the main ambiguity. After asking users for feedback after sessions, Isabel and others mentioned that typing space after each word felt natural from ordinary typing-test habits, and that adding it would make the task clearer. I replaced the visual-only separation with an explicit required-space delimiter. The player now types each target followed by space, which makes target completion unambiguous for both the user and the scoring engine.
 
 \paragraph{Error lockout.}
 During informal pilots, an incorrect key sometimes caused a cascade: the app advanced to the next target immediately, and the user's next keystroke could land on the new target before they had visually recovered. I added a 150 ms input lockout after an incorrect advancing error. This preserves the scoring rule while preventing one motor slip from creating multiple accidental errors.
@@ -68,24 +80,32 @@ During informal pilots, an incorrect key sometimes caused a cascade: the app adv
 \paragraph{Alphabet search.}
 The initial alphabets were single characters, common three-character words, pronounceable nonwords, and common five-character words. I then added a QWERTY ergonomic scoring model that rewards home-row use, hand alternation, and inward rolls while penalizing weak fingers, same-finger transitions, and row jumps. This produced ergonomic word and nonword subsets. Finally, I expanded the condition set to include full three-character and large five-character nonword alphabets so the pilot could measure the information-throughput tradeoff directly.
 
+\section{Alphabet Construction}
+
+The ergonomic conditions were built from explicit candidate pools rather than from adaptive generation during the task. For three-character nonwords, I enumerated all \(26^3\) lowercase strings, removed entries found in the real-word and common-word exclusion lists, and ranked the remaining \(16009\) strings with a QWERTY cost model. The score adds per-key costs for row and finger difficulty, then adds transition costs for distance, row jumps, same-hand transitions, and same-finger reuse. It gives small bonuses for hand alternation and inward rolls. The \(N=100\) and \(N=1000\) three-character nonword conditions are the first prefixes of this ranking; the \(N=16009\) condition uses the full remaining set.
+
+For five-character nonwords, the full set is too large to store directly in the session configuration. I therefore used two representations. The \(N=1000\) five-character condition is a stored ergonomic list generated from pronounceable CVCVC-style candidates. The \(N=100000\) and \(N=11871011\) conditions use a generated alphabet: strings are drawn by rank from an ergonomic character order and rejected if they appear in the exclusion lists. In all cases, once an alphabet size is chosen, targets are sampled uniformly over that fixed alphabet. The ranking determines which strings are eligible for a condition; it does not make easier strings more likely within that condition.
+
 \section{Pilot Evaluation}
 
-The Supabase database contains 107 session rows across 14 subject IDs. Because the condition set evolved during development, the cleanest analysis uses the five subjects who completed all 11 current conditions. Each condition was a 60-second scored session. For subjects with repeated runs of a condition, I used the latest run for that subject-condition pair.
+The Supabase database contains 111 session rows across 15 subject IDs. Because the condition set evolved during development, the cleanest analysis uses the five subjects who completed all 11 current conditions. Each condition was a 60-second scored session. For subjects with repeated runs of a condition, I used the latest run for that subject-condition pair. The cleaned session-level dataset and analysis script are included in the repository under \href{https://github.com/allensu02/sciencetakehome/tree/main/data}{\texttt{data/}} and \href{https://github.com/allensu02/sciencetakehome/tree/main/analysis}{\texttt{analysis/}}.
 
+\begin{samepage}
 The 11 current conditions span characters, real words, and nonwords:
 \begin{itemize}
-  \item single characters;
-  \item three-character common words;
-  \item all three-character real words;
+  \item single characters with \(N=26\);
+  \item three-character common words with \(N=100\);
+  \item all three-character real words with \(N=1567\);
   \item three-character nonwords at \(N=100\), \(N=1000\), and \(N=16009\);
-  \item five-character common words;
-  \item all five-character real words;
+  \item five-character common words with \(N=1000\);
+  \item all five-character real words with \(N=10365\);
   \item five-character nonwords at \(N=1000\), \(N=100000\), and \(N=11871011\).
 \end{itemize}
+\end{samepage}
 
 \section{Results}
 
-Table~\ref{tab:results} summarizes the complete-subject analysis. The real-word three-character condition achieved the highest raw bit rate, but the best nonword condition was the full three-character nonword alphabet.
+Table~\ref{tab:results} summarizes the complete-subject analysis. The best raw condition used real three-character words; the best nonword condition used the full three-character nonword alphabet.
 
 \begin{table}[ht]
 \centering
@@ -116,6 +136,13 @@ The highest observed bit rate came from all three-character real words. This con
 However, the final task should avoid word targets. Among nonword conditions, \(N=16009\) three-character nonwords performed best. It achieved 7.08 bps mean, 6.98 bps median, and an average within-subject rank of 3.0. It also had the best nonword rank profile: it was first overall for one subject and top-three overall for three of five subjects.
 
 The five-character conditions show why maximizing \(N\) alone is not enough. The largest five-character nonword alphabet has \(N=11871011\), which gives \(\log_2(N-1)\approx23.5\) bits per correct target. But participants completed only 19.2 correct selections on average, so its mean bit rate was 5.80 bps. In contrast, the three-character nonword condition has fewer bits per target but nearly twice as many correct selections.
+
+\paragraph{Why three characters beat one.}
+At first glance, the best three-character nonword result is surprising. Three single-letter selections carry \(3\log_2(25)\approx13.93\) bits, almost the same as one three-character nonword selection, which carries \(\log_2(16008)\approx13.97\) bits. If a three-character target took exactly three times as long as a one-character target, the two designs should have similar bit rates.
+
+The pilot data suggest that typing time did not scale linearly with target length. Single-character trials were very fast, but each target still required a separate visual acquisition, target boundary, space delimiter, and transition to the next item. Three-character targets amortized those fixed per-target costs over roughly three times as many bits. In the complete-subject data, participants made 84.4 correct single-character selections on average versus 37.0 correct selections for full three-character nonwords. That is only a \(2.28\times\) reduction in correct selection rate, while the information per correct selection increased by about \(3.01\times\). After incorrect selections are subtracted, the effective rate was still favorable: \(S_c-S_i\) was 79.6 for single characters and 30.4 for three-character nonwords, a \(2.62\times\) reduction. The extra entropy per target outweighed that slowdown.
+
+My hypothesis is that three-character strings are short enough to be typed as one small motor chunk, especially in the continuous stream interface, while single letters pay too much overhead per scored selection. Five-character strings move past that sweet spot: they provide more bits per target, but become slow enough that the added entropy no longer compensates.
 
 \section{Why Not Use Real Words?}
 

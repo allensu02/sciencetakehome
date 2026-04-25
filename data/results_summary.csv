@@ -1,0 +1,12 @@
+condition_id,condition_label,N,subjects,mean_bps,median_bps,sd_bps,mean_Sc,mean_Si,mean_accuracy
+single_char_random_letters,Single characters,26,5,6.160849,6.656194,1.814805,84.400000,4.800000,0.957668
+three_char_common_words_n100,3-char common words,100,5,6.563063,6.408378,2.126165,68.400000,9,0.881898
+three_char_all_words_n1567,3-char all words,1567,5,8.278037,9.020938,2.090642,53.400000,6.600000,0.898320
+three_char_ergonomic_nonwords_n100,3-char nonwords,100,5,3.425168,3.425168,0.749375,36.400000,5.400000,0.885032
+three_char_ergonomic_nonwords_n1000,3-char nonwords,1000,5,4.749669,4.483953,0.943840,35.800000,7.200000,0.865299
+three_char_ergonomic_nonwords_n16009,3-char nonwords,16009,5,7.076363,6.983253,1.583897,37,6.600000,0.862834
+five_char_common_words_n1000,5-char common words,1000,5,5.247886,5.314315,1.851539,40.800000,9.200000,0.817429
+five_char_all_words_n10365,5-char all words,10365,5,5.068931,6.225004,2.561044,33.400000,10.600000,0.770797
+five_char_ergonomic_nonwords_n1000,5-char nonwords,1000,5,3.221804,3.653592,1.278865,25.800000,6.400000,0.829354
+five_char_ergonomic_nonwords_n100000,5-char nonwords,100000,5,4.263137,4.429234,1.277610,20,4.600000,0.832095
+five_char_ergonomic_nonwords_n11871011,5-char nonwords,11871011,5,5.796898,6.266917,0.849147,19.200000,4.400000,0.836050

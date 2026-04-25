@@ -1,0 +1,112 @@
+session_code,subject_code,created_at,started_at,condition_id,condition_label,N,Sc,Si,bit_rate_bps,accuracy,duration_s,is_current_condition,is_latest_for_subject_condition,completed_all_11
+R0001,S01,2026-04-24T04:41:39.337583+00:00,2026-04-24T04:40:38.460Z,single_char_random_letters,Single characters,26,174,8,12.848002,0.956044,60,true,false,false
+R0002,S01,2026-04-24T04:43:06.400615+00:00,2026-04-24T04:42:14.280Z,single_char_random_letters,Single characters,26,4,130,0,0.029851,60,true,true,false
+R0003,S02,2026-04-24T04:47:12.174149+00:00,2026-04-24T04:46:11.476Z,three_char_common_words_n100,3-char common words,100,121,14,11.822353,0.896296,60,true,true,false
+R0004,S03,2026-04-24T05:02:33.41962+00:00,2026-04-24T05:01:32.580Z,single_char_random_letters,Single characters,26,84,0,6.501399,1,60,true,true,false
+R0005,S03,2026-04-24T05:03:54.721835+00:00,2026-04-24T05:02:54.134Z,three_char_common_words_n100,3-char common words,100,61,2,6.518867,0.968254,60,true,true,false
+R0006,S03,2026-04-24T05:05:16.135307+00:00,2026-04-24T05:04:15.655Z,three_char_pronounceable_nonwords_n500,three_char_pronounceable_nonwords_n500,500,50,1,7.319698,0.980392,60,false,true,false
+R0007,S03,2026-04-24T05:06:29.616455+00:00,2026-04-24T05:05:29.300Z,five_char_common_words_n1000,5-char common words,1000,45,1,7.307183,0.978261,60,true,true,false
+R0008,S04,2026-04-24T05:10:38.265726+00:00,2026-04-24T05:09:36.598Z,five_char_common_words_n1000,5-char common words,1000,74,8,10.960775,0.902439,60,true,true,false
+R0009,S04,2026-04-24T05:11:53.276645+00:00,2026-04-24T05:10:52.283Z,three_char_pronounceable_nonwords_n500,three_char_pronounceable_nonwords_n500,500,75,8,10.008567,0.903614,60,false,true,false
+R0010,S04,2026-04-24T05:13:08.659776+00:00,2026-04-24T05:12:07.286Z,three_char_common_words_n100,3-char common words,100,111,9,11.269906,0.925000,60,true,true,false
+R0011,S04,2026-04-24T05:14:20.733681+00:00,2026-04-24T05:13:19.767Z,single_char_random_letters,Single characters,26,140,3,10.603472,0.979021,60,true,true,false
+R0012,S05,2026-04-24T05:24:15.511509+00:00,2026-04-24T05:23:14.447Z,single_char_random_letters,Single characters,26,183,8,13.544581,0.958115,60,true,false,false
+R0013,S05,2026-04-24T05:25:35.767934+00:00,2026-04-24T05:24:35.074Z,three_char_pronounceable_nonwords_n500,three_char_pronounceable_nonwords_n500,500,66,34,4.780211,0.660000,60,false,true,false
+R0014,S05,2026-04-24T05:27:01.135924+00:00,2026-04-24T05:26:00.475Z,single_char_random_letters,Single characters,26,166,19,11.377448,0.897297,60,true,true,false
+R0015,S05,2026-04-24T05:28:17.497095+00:00,2026-04-24T05:27:16.844Z,five_char_common_words_n1000,5-char common words,1000,81,35,7.639328,0.698276,60,true,true,false
+R0016,S06,2026-04-24T05:38:32.921795+00:00,2026-04-24T05:37:32.434Z,three_char_common_words_n100,3-char common words,100,114,28,9.502078,0.802817,60,true,true,false
+R0017,S06,2026-04-24T05:40:24.262778+00:00,2026-04-24T05:39:23.708Z,single_char_random_letters,Single characters,26,161,5,12.074026,0.969880,60,true,true,false
+R0018,S06,2026-04-24T05:41:42.366733+00:00,2026-04-24T05:40:41.909Z,three_char_pronounceable_nonwords_n500,three_char_pronounceable_nonwords_n500,500,85,11,11.054238,0.885417,60,false,true,false
+R0019,S06,2026-04-24T05:42:23.235122+00:00,2026-04-24T05:41:52.530Z,five_char_common_words_n1000,5-char common words,1000,32,20,3.960810,0.615385,60,true,false,false
+R0020,S06,2026-04-24T05:43:37.662736+00:00,2026-04-24T05:42:37.408Z,five_char_common_words_n1000,5-char common words,1000,75,16,9.798269,0.824176,60,true,true,false
+R0021,S07,2026-04-24T20:03:57.2453+00:00,2026-04-24T20:02:56.356Z,three_char_pronounceable_nonwords_n500,three_char_pronounceable_nonwords_n500,500,67,15,7.767843,0.817073,60,false,true,false
+R0022,S07,2026-04-24T20:05:28.158279+00:00,2026-04-24T20:04:27.496Z,three_char_common_words_n100,3-char common words,100,100,10,9.944035,0.909091,60,true,true,false
+R0023,S07,2026-04-24T20:06:38.642717+00:00,2026-04-24T20:05:37.666Z,five_char_common_words_n1000,5-char common words,1000,61,13,7.971473,0.824324,60,true,true,false
+R0024,S07,2026-04-24T20:07:46.736541+00:00,2026-04-24T20:06:46.254Z,single_char_random_letters,Single characters,26,130,9,9.365110,0.935252,60,true,true,false
+R0025,S01,2026-04-24T21:46:48.884932+00:00,2026-04-24T21:46:40.315Z,three_char_common_words_n100,3-char common words,100,6,0,4.750014,1,60,true,false,false
+R0026,S01,2026-04-24T21:47:00.078495+00:00,2026-04-24T21:46:54.584Z,three_char_common_words_n100,3-char common words,100,6,0,7.514857,1,60,true,false,false
+R0027,S01,2026-04-24T21:47:06.508197+00:00,2026-04-24T21:47:06.344Z,three_char_common_words_n100,3-char common words,100,0,0,0,,60,true,false,false
+R0028,S01,2026-04-24T21:48:10.881262+00:00,2026-04-24T21:47:10.684Z,three_char_common_words_n100,3-char common words,100,1,0,0.110489,1,60,true,false,false
+R0029,S01,2026-04-24T21:55:39.227282+00:00,2026-04-24T21:54:37.859Z,three_char_common_words_n100,3-char common words,100,31,7,2.651743,0.815789,60,true,false,false
+R0030,S01,2026-04-24T22:00:51.534744+00:00,2026-04-24T21:59:50.851Z,three_char_common_words_n100,3-char common words,100,90,19,7.844739,0.825688,60,true,true,false
+R0031,S01,2026-04-24T22:10:54.542553+00:00,2026-04-24T22:10:27.421Z,three_char_ergonomic_words_n100,three_char_ergonomic_words_n100,100,37,7,7.392428,0.840909,60,false,true,false
+R0032,S01,2026-04-24T22:23:09.516425+00:00,2026-04-24T22:23:01.240Z,three_char_pronounceable_nonwords_n500,three_char_pronounceable_nonwords_n500,500,4,7,0,0.363636,60,false,true,false
+R0033,S01,2026-04-24T22:23:17.871633+00:00,2026-04-24T22:23:17.813Z,five_char_ergonomic_words_n1000,five_char_ergonomic_words_n1000,1000,0,0,0,,60,false,true,false
+R0034,S01,2026-04-24T22:25:47.543413+00:00,2026-04-24T22:25:17.929Z,three_char_ergonomic_nonwords_n100,3-char nonwords,100,40,4,8.131907,0.909091,60,true,true,false
+R0035,S01,2026-04-24T22:30:20.918243+00:00,2026-04-24T22:29:43.264Z,three_char_ergonomic_nonwords_n1000,3-char nonwords,1000,23,4,5.093942,0.851852,60,true,true,false
+R0036,S08,2026-04-24T22:34:00.573073+00:00,2026-04-24T22:33:00.290Z,single_char_random_letters,Single characters,26,100,6,7.275375,0.943396,60,true,true,false
+R0037,S08,2026-04-24T22:35:22.966218+00:00,2026-04-24T22:34:22.823Z,three_char_common_words_n100,3-char common words,100,71,11,6.629357,0.865854,60,true,true,false
+R0038,S08,2026-04-24T22:36:33.664374+00:00,2026-04-24T22:35:33.671Z,three_char_ergonomic_words_n100,three_char_ergonomic_words_n100,100,67,11,6.187400,0.858974,60,false,true,false
+R0039,S08,2026-04-24T22:37:41.638182+00:00,2026-04-24T22:36:41.902Z,three_char_ergonomic_nonwords_n1000,3-char nonwords,1000,40,6,5.646460,0.869565,60,true,true,false
+R0040,S08,2026-04-24T22:38:49.356885+00:00,2026-04-24T22:37:49.417Z,three_char_pronounceable_nonwords_n500,three_char_pronounceable_nonwords_n500,500,50,3,7.020935,0.943396,60,false,true,false
+R0041,S08,2026-04-24T22:39:55.479402+00:00,2026-04-24T22:38:55.745Z,five_char_common_words_n1000,5-char common words,1000,48,7,6.808966,0.872727,60,true,true,false
+R0042,S08,2026-04-24T22:41:02.202692+00:00,2026-04-24T22:40:01.885Z,five_char_ergonomic_words_n1000,five_char_ergonomic_words_n1000,1000,44,13,5.148243,0.771930,60,false,true,false
+R0043,S08,2026-04-24T22:42:08.572687+00:00,2026-04-24T22:41:08.652Z,five_char_ergonomic_nonwords_n1000,5-char nonwords,1000,31,11,3.321447,0.738095,60,true,true,false
+R0044,S09,2026-04-25T00:58:43.869266+00:00,2026-04-25T00:58:40.466Z,single_char_random_letters,Single characters,26,0,3,0,0,60,true,false,false
+R0045,S09,2026-04-25T00:59:47.812709+00:00,2026-04-25T00:58:47.213Z,single_char_random_letters,Single characters,26,150,4,11.300050,0.974026,60,true,false,false
+R0046,S09,2026-04-25T01:00:55.011654+00:00,2026-04-25T00:59:54.341Z,single_char_random_letters,Single characters,26,200,2,15.324725,0.990099,60,true,false,false
+R0047,S09,2026-04-25T01:01:01.609272+00:00,2026-04-25T01:00:59.500Z,three_char_common_words_n100,3-char common words,100,1,2,0,0.333333,60,true,false,false
+R0048,S09,2026-04-25T01:02:07.010992+00:00,2026-04-25T01:01:06.197Z,three_char_common_words_n100,3-char common words,100,114,16,10.827949,0.876923,60,true,true,false
+R0049,S09,2026-04-25T01:03:18.001051+00:00,2026-04-25T01:02:17.507Z,three_char_all_words_n1567,3-char all words,1567,97,5,16.273065,0.950980,60,true,false,false
+R0050,S09,2026-04-25T01:04:26.657144+00:00,2026-04-25T01:03:26.260Z,three_char_ergonomic_nonwords_n100,3-char nonwords,100,44,19,2.762232,0.698413,60,true,false,false
+R0051,S09,2026-04-25T01:05:36.377476+00:00,2026-04-25T01:04:35.781Z,three_char_ergonomic_nonwords_n1000,3-char nonwords,1000,56,12,7.307183,0.823529,60,true,true,false
+R0052,S09,2026-04-25T01:08:48.087888+00:00,2026-04-25T01:07:47.483Z,three_char_ergonomic_nonwords_n16009,3-char nonwords,16009,60,10,11.638755,0.857143,60,true,true,false
+R0053,S10,2026-04-25T04:48:46.865023+00:00,2026-04-25T04:47:46.132Z,single_char_random_letters,Single characters,26,103,8,7.352772,0.927928,60,true,true,true
+R0054,S10,2026-04-25T04:49:58.074986+00:00,2026-04-25T04:48:57.398Z,three_char_common_words_n100,3-char common words,100,76,13,6.960824,0.853933,60,true,true,true
+R0055,S10,2026-04-25T04:51:06.387117+00:00,2026-04-25T04:50:05.485Z,three_char_all_words_n1567,3-char all words,1567,59,8,9.020938,0.880597,60,true,true,true
+R0056,S10,2026-04-25T04:52:12.224186+00:00,2026-04-25T04:51:11.606Z,three_char_ergonomic_nonwords_n100,3-char nonwords,100,39,10,3.204189,0.795918,60,true,true,true
+R0057,S10,2026-04-25T04:53:21.43771+00:00,2026-04-25T04:52:20.695Z,three_char_ergonomic_nonwords_n1000,3-char nonwords,1000,40,5,5.812532,0.888889,60,true,true,true
+R0058,S10,2026-04-25T04:54:31.986497+00:00,2026-04-25T04:53:30.985Z,three_char_ergonomic_nonwords_n16009,3-char nonwords,16009,39,10,6.750478,0.795918,60,true,true,true
+R0059,S10,2026-04-25T04:55:57.79703+00:00,2026-04-25T04:54:57.278Z,five_char_common_words_n1000,5-char common words,1000,49,16,5.480387,0.753846,60,true,true,true
+R0060,S10,2026-04-25T04:57:05.215294+00:00,2026-04-25T04:56:04.253Z,five_char_all_words_n10365,5-char all words,10365,39,10,6.447325,0.795918,60,true,true,true
+R0061,S10,2026-04-25T04:58:11.653772+00:00,2026-04-25T04:57:11.097Z,five_char_ergonomic_nonwords_n1000,5-char nonwords,1000,32,3,4.816098,0.914286,60,true,true,true
+R0062,S10,2026-04-25T04:59:22.397061+00:00,2026-04-25T04:58:21.812Z,five_char_ergonomic_nonwords_n100000,5-char nonwords,100000,20,7,3.598752,0.740741,60,true,true,true
+R0063,S10,2026-04-25T05:00:29.877618+00:00,2026-04-25T04:59:29.456Z,five_char_ergonomic_nonwords_n11871011,5-char nonwords,11871011,20,4,6.266917,0.833333,60,true,true,true
+R0064,S11,2026-04-25T05:02:17.763544+00:00,2026-04-25T05:01:17.226Z,five_char_ergonomic_nonwords_n11871011,5-char nonwords,11871011,17,4,5.091870,0.809524,60,true,true,true
+R0065,S11,2026-04-25T05:03:28.138871+00:00,2026-04-25T05:02:27.384Z,five_char_ergonomic_nonwords_n100000,5-char nonwords,100000,19,3,4.429234,0.863636,60,true,true,true
+R0066,S12,2026-04-25T05:04:23.361494+00:00,2026-04-25T05:03:26.590Z,five_char_common_words_n1000,5-char common words,1000,24,7,2.823230,0.774194,60,true,true,true
+R0067,S11,2026-04-25T05:04:37.317836+00:00,2026-04-25T05:03:37.014Z,five_char_ergonomic_nonwords_n1000,5-char nonwords,1000,29,6,3.819664,0.828571,60,true,true,true
+R0068,S11,2026-04-25T05:05:48.751659+00:00,2026-04-25T05:04:47.808Z,five_char_all_words_n10365,5-char all words,10365,24,20,0.889286,0.545455,60,true,true,true
+R0069,S12,2026-04-25T05:06:13.580523+00:00,2026-04-25T05:05:16.956Z,three_char_common_words_n100,3-char common words,100,45,8,4.088103,0.849057,60,true,true,true
+R0070,S11,2026-04-25T05:06:56.138143+00:00,2026-04-25T05:05:55.803Z,five_char_common_words_n1000,5-char common words,1000,39,7,5.314315,0.847826,60,true,true,true
+R0071,S12,2026-04-25T05:08:00.569946+00:00,2026-04-25T05:07:03.815Z,five_char_ergonomic_nonwords_n11871011,5-char nonwords,11871011,14,2,4.700188,0.875000,60,true,true,true
+R0072,S11,2026-04-25T05:08:06.134652+00:00,2026-04-25T05:07:05.301Z,three_char_ergonomic_nonwords_n16009,3-char nonwords,16009,41,4,8.612678,0.911111,60,true,true,true
+R0073,S11,2026-04-25T05:09:13.284368+00:00,2026-04-25T05:08:13.010Z,three_char_ergonomic_nonwords_n1000,3-char nonwords,1000,35,10,4.151809,0.777778,60,true,true,true
+R0074,S12,2026-04-25T05:09:16.771476+00:00,2026-04-25T05:08:20.091Z,three_char_ergonomic_nonwords_n100,3-char nonwords,100,24,3,2.320275,0.888889,60,true,true,true
+R0075,S11,2026-04-25T05:10:23.739373+00:00,2026-04-25T05:09:23.320Z,three_char_ergonomic_nonwords_n100,3-char nonwords,100,42,3,4.309082,0.933333,60,true,true,true
+R0076,S12,2026-04-25T05:10:55.276757+00:00,2026-04-25T05:09:58.544Z,five_char_ergonomic_nonwords_n1000,5-char nonwords,1000,15,3,1.992868,0.833333,60,true,true,true
+R0077,S11,2026-04-25T05:11:31.383676+00:00,2026-04-25T05:10:30.838Z,three_char_all_words_n1567,3-char all words,1567,55,3,9.197819,0.948276,60,true,true,true
+R0078,S12,2026-04-25T05:12:11.994582+00:00,2026-04-25T05:11:15.307Z,single_char_random_letters,Single characters,26,47,0,3.637687,1,60,true,true,true
+R0079,S11,2026-04-25T05:12:39.378915+00:00,2026-04-25T05:11:38.996Z,three_char_common_words_n100,3-char common words,100,67,9,6.408378,0.881579,60,true,true,true
+R0080,S13,2026-04-25T05:13:16.176001+00:00,2026-04-25T05:12:15.571Z,single_char_random_letters,Single characters,26,67,2,5.030844,0.971014,60,true,true,true
+R0081,S12,2026-04-25T05:13:35.51209+00:00,2026-04-25T05:12:38.607Z,three_char_ergonomic_nonwords_n16009,3-char nonwords,16009,24,4,4.655502,0.857143,60,true,true,true
+R0082,S11,2026-04-25T05:13:46.79725+00:00,2026-04-25T05:12:46.239Z,single_char_random_letters,Single characters,26,87,1,6.656194,0.988636,60,true,true,true
+R0083,S12,2026-04-25T05:14:48.048841+00:00,2026-04-25T05:13:51.092Z,five_char_ergonomic_nonwords_n100000,5-char nonwords,100000,12,3,2.491444,0.800000,60,true,true,true
+R0084,S13,2026-04-25T05:15:06.136223+00:00,2026-04-25T05:14:05.767Z,three_char_all_words_n1567,3-char all words,1567,45,3,7.429008,0.937500,60,true,true,true
+R0085,S12,2026-04-25T05:16:10.721326+00:00,2026-04-25T05:15:14.061Z,three_char_all_words_n1567,3-char all words,1567,33,4,5.129553,0.891892,60,true,true,true
+R0086,S13,2026-04-25T05:16:26.616318+00:00,2026-04-25T05:15:26.217Z,five_char_ergonomic_nonwords_n100000,5-char nonwords,100000,18,0,4.982888,1,60,true,true,true
+R0087,S12,2026-04-25T05:17:22.08984+00:00,2026-04-25T05:16:25.118Z,five_char_all_words_n10365,5-char all words,10365,25,5,4.446431,0.833333,60,true,true,true
+R0088,S13,2026-04-25T05:17:54.149356+00:00,2026-04-25T05:16:53.714Z,three_char_ergonomic_nonwords_n16009,3-char nonwords,16009,36,0,8.379903,1,60,true,true,true
+R0089,S12,2026-04-25T05:18:36.582978+00:00,2026-04-25T05:17:39.941Z,three_char_ergonomic_nonwords_n1000,3-char nonwords,1000,23,1,3.653592,0.958333,60,true,true,true
+R0090,S13,2026-04-25T05:19:14.96024+00:00,2026-04-25T05:18:14.516Z,five_char_ergonomic_nonwords_n11871011,5-char nonwords,11871011,17,1,6.266917,0.944444,60,true,true,true
+R0091,S13,2026-04-25T05:20:31.660031+00:00,2026-04-25T05:19:31.194Z,five_char_all_words_n10365,5-char all words,10365,35,2,7.336611,0.945946,60,true,true,true
+R0092,S13,2026-04-25T05:21:49.078843+00:00,2026-04-25T05:20:48.643Z,three_char_common_words_n100,3-char common words,100,55,5,5.524464,0.916667,60,true,true,true
+R0093,S13,2026-04-25T05:23:06.014784+00:00,2026-04-25T05:22:05.660Z,three_char_ergonomic_nonwords_n1000,3-char nonwords,1000,34,0,5.646460,1,60,true,true,true
+R0094,S13,2026-04-25T05:24:28.165822+00:00,2026-04-25T05:23:27.822Z,five_char_ergonomic_nonwords_n1000,5-char nonwords,1000,23,1,3.653592,0.958333,60,true,true,true
+R0095,S13,2026-04-25T05:25:43.963396+00:00,2026-04-25T05:24:43.375Z,three_char_ergonomic_nonwords_n100,3-char nonwords,100,31,0,3.425168,1,60,true,true,true
+R0096,S13,2026-04-25T05:27:03.761823+00:00,2026-04-25T05:26:03.305Z,five_char_common_words_n1000,5-char common words,1000,33,5,4.650026,0.868421,60,true,true,true
+R0097,S14,2026-04-25T05:31:36.363841+00:00,2026-04-25T05:30:35.481Z,five_char_ergonomic_nonwords_n1000,5-char nonwords,1000,30,19,1.826796,0.612245,60,true,true,true
+R0098,S14,2026-04-25T05:32:49.750479+00:00,2026-04-25T05:31:49.083Z,single_char_random_letters,Single characters,26,118,13,8.126748,0.900763,60,true,true,true
+R0099,S14,2026-04-25T05:33:57.307306+00:00,2026-04-25T05:32:56.963Z,three_char_ergonomic_nonwords_n100,3-char nonwords,100,46,11,3.867125,0.807018,60,true,true,true
+R0100,S14,2026-04-25T05:35:39.828105+00:00,2026-04-25T05:34:39.505Z,five_char_ergonomic_nonwords_n11871011,5-char nonwords,11871011,28,11,6.658599,0.717949,60,true,true,true
+R0101,S14,2026-04-25T05:36:50.432853+00:00,2026-04-25T05:35:50.186Z,three_char_common_words_n100,3-char common words,100,99,10,9.833546,0.908257,60,true,true,true
+R0102,S14,2026-04-25T05:38:04.505029+00:00,2026-04-25T05:37:04.061Z,five_char_common_words_n1000,5-char common words,1000,59,11,7.971473,0.842857,60,true,true,true
+R0103,S14,2026-04-25T05:39:19.280499+00:00,2026-04-25T05:38:19.038Z,three_char_ergonomic_nonwords_n1000,3-char nonwords,1000,47,20,4.483953,0.701493,60,true,true,true
+R0104,S14,2026-04-25T05:40:27.776217+00:00,2026-04-25T05:39:27.373Z,three_char_all_words_n1567,3-char all words,1567,75,15,10.612868,0.833333,60,true,true,true
+R0105,S14,2026-04-25T05:41:37.958639+00:00,2026-04-25T05:40:37.458Z,five_char_ergonomic_nonwords_n100000,5-char nonwords,100000,31,10,5.813369,0.756098,60,true,true,true
+R0106,S14,2026-04-25T05:42:48.094503+00:00,2026-04-25T05:41:46.925Z,three_char_ergonomic_nonwords_n16009,3-char nonwords,16009,45,15,6.983253,0.750000,60,true,true,true
+R0107,S14,2026-04-25T05:43:55.259186+00:00,2026-04-25T05:42:54.824Z,five_char_all_words_n10365,5-char all words,10365,44,16,6.225004,0.733333,60,true,true,true
+R0108,S09,2026-04-25T06:02:27.829182+00:00,2026-04-25T06:01:26.790Z,three_char_all_words_n1567,3-char all words,1567,20,5,2.653217,0.800000,60,true,true,false
+R0109,S09,2026-04-25T06:14:33.283884+00:00,2026-04-25T06:14:32.539Z,single_char_random_letters,Single characters,26,0,0,0,,60,true,true,false
+R0110,S09,2026-04-25T06:15:38.552586+00:00,2026-04-25T06:14:37.432Z,three_char_ergonomic_nonwords_n100,3-char nonwords,100,3,1,0.220979,0.750000,60,true,true,false
+R0111,S15,2026-04-25T06:20:26.492551+00:00,2026-04-25T06:20:04.062Z,three_char_ergonomic_nonwords_n16009,3-char nonwords,16009,22,3,12.361006,0.880000,60,true,true,false

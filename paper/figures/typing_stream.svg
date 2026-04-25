@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="640" viewBox="0 0 2048 640">
+  <rect width="2048" height="640" fill="#333437"/>
+  <text x="78" y="128" fill="#e1c33e" font-family="Menlo, Consolas, monospace" font-size="72" font-weight="700">54</text>
+  <g font-family="Menlo, Consolas, monospace" font-size="84" font-weight="700">
+    <text x="78" y="260" fill="#5a5b5e">jjf</text>
+    <text x="292" y="260" fill="#5a5b5e">djj</text>
+    <text x="514" y="260" fill="#5a5b5e">jgj</text>
+    <text x="727" y="260" fill="#d85869">f</text>
+    <text x="779" y="260" fill="#5a5b5e">jj</text>
+    <text x="941" y="260" fill="#f0eee1">jjf</text>
+    <rect x="1085" y="176" width="6" height="92" rx="3" fill="#dfc842"/>
+    <text x="1149" y="260" fill="#696a6d">hgk</text>
+    <text x="1365" y="260" fill="#696a6d">dds</text>
+    <text x="1581" y="260" fill="#696a6d">bjg</text>
+    <text x="1798" y="260" fill="#696a6d">dhf</text>
+
+    <text x="78" y="385" fill="#696a6d">dgj</text>
+    <text x="292" y="385" fill="#696a6d">kgh</text>
+    <text x="508" y="385" fill="#696a6d">dgg</text>
+    <text x="727" y="385" fill="#696a6d">dff</text>
+    <text x="941" y="385" fill="#696a6d">jjf</text>
+    <text x="1149" y="385" fill="#696a6d">gjj</text>
+    <text x="1365" y="385" fill="#696a6d">adg</text>
+    <text x="1581" y="385" fill="#696a6d">bhh</text>
+    <text x="1798" y="385" fill="#696a6d">hgg</text>
+
+    <text x="78" y="510" fill="#696a6d">dgj</text>
+    <text x="292" y="510" fill="#696a6d">jgj</text>
+    <text x="508" y="510" fill="#696a6d">jff</text>
+    <text x="727" y="510" fill="#696a6d">fkk</text>
+    <text x="941" y="510" fill="#696a6d">adf</text>
+    <text x="1149" y="510" fill="#696a6d">ddd</text>
+    <text x="1365" y="510" fill="#696a6d">djf</text>
+    <text x="1581" y="510" fill="#696a6d">jfh</text>
+    <text x="1798" y="510" fill="#696a6d">fhg</text>
+  </g>
+</svg>

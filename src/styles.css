@@ -68,6 +68,13 @@ h2 {
   font-size: 1.2rem;
 }
 
+.instruction-note {
+  margin: 12px 0 0;
+  max-width: 680px;
+  color: var(--text);
+  font-size: 1rem;
+}
+
 .muted {
   color: var(--muted);
 }
