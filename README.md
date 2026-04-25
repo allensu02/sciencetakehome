@@ -106,7 +106,7 @@ to anon
 with check (true);
 ```
 
-Do not add an anon `SELECT` policy.
+For a public dashboard, also add the anon `SELECT` policy below.
 
 ## Admin Dashboard
 
@@ -116,32 +116,19 @@ The deployed app includes an admin dashboard at:
 https://your-deployment.vercel.app/admin
 ```
 
-The dashboard uses Supabase Auth and RLS. Public users can insert logs, but only your authenticated admin email can read them.
+The dashboard is publicly viewable. Public users can insert logs and read logs for the dashboard.
 
-Add this policy in Supabase SQL Editor, replacing the email:
+Add this policy in Supabase SQL Editor:
 
 ```sql
-create policy "Only admin can read session logs"
+create policy "Anyone can read session logs"
 on public.session_logs
 for select
-to authenticated
-using (
-  auth.jwt() ->> 'email' = 'YOUR_EMAIL@example.com'
-);
+to anon
+using (true);
 ```
 
-Supabase Auth setup:
-
-1. Go to Authentication -> Providers and make sure Email is enabled.
-2. Go to Authentication -> URL Configuration.
-3. Set Site URL to your deployed app URL.
-4. Add this Redirect URL:
-
-```text
-https://your-deployment.vercel.app/admin
-```
-
-Then open `/admin`, enter the admin email, and use the magic link. The dashboard groups sessions by trimmed `subject_id`, lists readable Pacific-time session dates, and shows the same bit-rate-over-time chart style used on the participant result screen.
+Then open `/admin`. The dashboard groups sessions by trimmed `subject_id`, lists readable Pacific-time session dates, and shows the same bit-rate-over-time chart style used on the participant result screen.
 
 ## Remote Logging Behavior
 

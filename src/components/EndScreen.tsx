@@ -21,6 +21,10 @@ export function EndScreen({
 }: EndScreenProps): JSX.Element {
   return (
     <main className="panel end">
+      <div className="brand-lockup" aria-label="Science Corporation">
+        <span className="science-mark" aria-hidden="true" />
+        <span>Science</span>
+      </div>
       <p className="eyebrow">Final report</p>
       <h1>{log.final.bit_rate_bps.toFixed(2)} bps</h1>
       <div className="metrics">

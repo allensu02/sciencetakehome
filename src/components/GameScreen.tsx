@@ -102,6 +102,10 @@ export function GameScreen({ snapshot, targetErrors, onEnd }: GameScreenProps): 
 
   return (
     <main className="game">
+      <div className="game-brand" aria-label="Science Corporation">
+        <span className="science-mark" aria-hidden="true" />
+        <span>Science</span>
+      </div>
       <div className="hud bitrate">{snapshot.bitRateBps.toFixed(2)} bps</div>
       {!snapshot.started && <div className="ready">Press the first key to start the timer</div>}
       <button className="end-run-button" onClick={onEnd}>end</button>

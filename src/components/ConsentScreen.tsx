@@ -5,6 +5,10 @@ type ConsentScreenProps = {
 export function ConsentScreen({ onContinue }: ConsentScreenProps): JSX.Element {
   return (
     <main className="panel consent">
+      <div className="brand-lockup" aria-label="Science Corporation">
+        <span className="science-mark" aria-hidden="true" />
+        <span>Science</span>
+      </div>
       <p className="eyebrow">Research consent</p>
       <h1>BCI bit-rate typing study</h1>
       <p>
@@ -17,7 +21,7 @@ export function ConsentScreen({ onContinue }: ConsentScreenProps): JSX.Element {
           <ul>
             <li>Keystrokes typed in the task</li>
             <li>Event timestamps from performance.now()</li>
-            <li>Subject ID</li>
+            <li>Name</li>
             <li>Selected condition and generated targets</li>
             <li>Final score metrics</li>
           </ul>

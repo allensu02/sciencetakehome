@@ -4,6 +4,7 @@
 \usepackage{amsmath}
 \usepackage{booktabs}
 \usepackage{graphicx}
+\usepackage{xurl}
 \usepackage{hyperref}
 
 \title{Maximizing First-Session Bit Rate with Short Nonword Targets}
@@ -18,7 +19,7 @@ This report describes a 60-second browser task designed to maximize achieved bit
 \[
 B = \frac{\log_2(N - 1)\max(S_c - S_i, 0)}{t}.
 \]
-I implemented and iteratively refined the task interface, input handling, logging pipeline, and target alphabets, then ran a small pilot study over 11 candidate conditions. The deployed final task is available at \url{https://sciencetakehome.vercel.app}. Across five subjects who completed all current conditions, real three-character words achieved the highest observed bit rate (mean 8.28 bps), but word targets are not appropriate for the final task constraint. Among nonword conditions, the strongest valid condition was a three-character nonword alphabet with \(N=16009\), which achieved 7.08 bps mean and 6.98 bps median. I therefore select three-character nonword targets as the final submission task: they preserve fast first-session typing while providing a large enough alphabet to carry substantially more information per correct selection than single letters.
+I implemented and iteratively refined the task interface, input handling, Supabase logging pipeline, public analysis dashboard, and target alphabets, then ran a small pilot study over 11 candidate conditions. The deployed final task is available at \url{https://sciencetakehome.vercel.app}, and the public Supabase-backed dashboard is available at \url{https://sciencetakehome.vercel.app/admin}. The GitHub repository, including source code, cleaned pilot data, and analysis scripts, is available at \url{https://github.com/allensu02/sciencetakehome}. Across five subjects who completed all current conditions, real three-character words achieved the highest observed bit rate (mean 8.28 bps), but word targets are not appropriate for the final task constraint. Among nonword conditions, the strongest valid condition was a three-character nonword alphabet with \(N=16009\), which achieved 7.08 bps mean and 6.98 bps median. I therefore select three-character nonword targets as the final submission task: they preserve fast first-session typing while providing a large enough alphabet to carry substantially more information per correct selection than single letters.
 \end{abstract}
 
 \section{Goal}
@@ -48,7 +49,7 @@ The system is a TypeScript/React web app with a pure session engine. The engine 
 
 The final scored session lasts exactly 60 seconds. Timing starts on the first keystroke, not on page load, so the participant can visually orient before the scored window begins. At the end of the session the app reports \(N\), \(S_c\), \(S_i\), and final bit rate.
 
-For remote pilot collection, the app uploads completed JSON logs to Supabase. Each log contains the subject ID, condition ID, selected configuration, target presentations, task keystrokes, timestamps, and final metrics. An authenticated admin dashboard reads the logs, groups them by subject, and reconstructs bit-rate-over-time curves.
+For remote pilot collection, the app uploads completed JSON logs to Supabase. Each log contains the subject ID, condition ID, selected configuration, target presentations, task keystrokes, timestamps, and final metrics. A public dashboard at \url{https://sciencetakehome.vercel.app/admin} reads the logs, groups them by subject, and reconstructs bit-rate-over-time curves.
 
 \section{Interface Iteration}
 
@@ -69,7 +70,7 @@ The earliest interface presented literally one target on the screen at a time. I
 \end{figure}
 
 \paragraph{Remote logging and review.}
-I added Supabase logging and an admin dashboard once the task became an empirical design search rather than a single static game. This made it possible to compare conditions across users, inspect sessions, and avoid relying on manual downloads.
+I added Supabase logging and a dashboard once the task became an empirical design search rather than a single static game. This made it possible to compare conditions across users, inspect sessions, and avoid relying on manual downloads.
 
 \paragraph{Target boundary handling.}
 I briefly experimented with visual letter spacing, where letters were displayed with added visual separation but users did not type spaces. This made the display more complex without solving the main ambiguity. After asking users for feedback after sessions, Isabel and others mentioned that typing space after each word felt natural from ordinary typing-test habits, and that adding it would make the task clearer. I replaced the visual-only separation with an explicit required-space delimiter. The player now types each target followed by space, which makes target completion unambiguous for both the user and the scoring engine.
@@ -89,6 +90,8 @@ For five-character nonwords, the full set is too large to store directly in the 
 \section{Pilot Evaluation}
 
 The Supabase database contains 111 session rows across 15 subject IDs. Because the condition set evolved during development, the cleanest analysis uses the five subjects who completed all 11 current conditions. Each condition was a 60-second scored session. For subjects with repeated runs of a condition, I used the latest run for that subject-condition pair. The cleaned session-level dataset and analysis script are included in the repository under \href{https://github.com/allensu02/sciencetakehome/tree/main/data}{\texttt{data/}} and \href{https://github.com/allensu02/sciencetakehome/tree/main/analysis}{\texttt{analysis/}}.
+
+I recruited friends as pilot subjects and conducted most sessions over Zoom. I joined a call with each subject, asked them to share their screen while they ran the browser task, and recorded the session so I could review interface confusion, error cascades, and other qualitative behavior after the fact. These recordings were used only as design feedback rather than as part of the numerical bit-rate analysis. Recordings can be provided on request.
 
 \begin{samepage}
 The 11 current conditions span characters, real words, and nonwords:

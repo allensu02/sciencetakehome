@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import type { Session } from '@supabase/supabase-js';
 import { getAdminClient } from '../logging/LogUploader';
 import type { BitRatePoint, SessionLog } from '../types';
 import { BitRateChart } from './EndScreen';
@@ -17,8 +16,6 @@ type SubjectGroup = {
 
 export function AdminDashboard(): JSX.Element {
   const supabase = getAdminClient();
-  const [session, setSession] = useState<Session | null>(null);
-  const [email, setEmail] = useState('');
   const [message, setMessage] = useState<string | null>(null);
   const [rows, setRows] = useState<SessionLogRow[]>([]);
   const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(null);
@@ -27,19 +24,6 @@ export function AdminDashboard(): JSX.Element {
 
   useEffect(() => {
     if (!supabase) {
-      return;
-    }
-    void supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-    });
-    const { data } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      setSession(nextSession);
-    });
-    return () => data.subscription.unsubscribe();
-  }, [supabase]);
-
-  useEffect(() => {
-    if (!supabase || !session) {
       return;
     }
     setLoading(true);
@@ -58,7 +42,7 @@ export function AdminDashboard(): JSX.Element {
         const firstSubject = groupRows(nextRows)[0]?.subjectId ?? null;
         setSelectedSubjectId((current) => current ?? firstSubject);
       });
-  }, [session, supabase]);
+  }, [supabase]);
 
   const groups = useMemo(() => groupRows(rows), [rows]);
   const selectedGroup = groups.find((group) => group.subjectId === selectedSubjectId) ?? groups[0] ?? null;
@@ -79,46 +63,17 @@ export function AdminDashboard(): JSX.Element {
     );
   }
 
-  if (!session) {
-    return (
-      <main className="panel admin">
-        <p className="eyebrow">Admin</p>
-        <h1>Session dashboard</h1>
-        <p className="lead">Sign in with the admin email allowed by the Supabase RLS read policy.</p>
-        <form
-          className="admin-login"
-          onSubmit={(event) => {
-            event.preventDefault();
-            setMessage(null);
-            void supabase.auth.signInWithOtp({
-              email: email.trim(),
-              options: {
-                emailRedirectTo: `${window.location.origin}/admin`
-              }
-            }).then(({ error }) => {
-              setMessage(error ? error.message : 'Check your email for the login link.');
-            });
-          }}
-        >
-          <label className="field">
-            <span>Email</span>
-            <input value={email} onChange={(event) => setEmail(event.target.value)} type="email" required />
-          </label>
-          <button className="primary">Send magic link</button>
-        </form>
-        {message && <div className="banner">{message}</div>}
-      </main>
-    );
-  }
-
   return (
     <main className="admin-shell">
       <header className="admin-header">
         <div>
+          <div className="brand-lockup" aria-label="Science Corporation">
+            <span className="science-mark" aria-hidden="true" />
+            <span>Science</span>
+          </div>
           <p className="eyebrow">Admin</p>
           <h1>Session dashboard</h1>
         </div>
-        <button className="secondary" onClick={() => void supabase.auth.signOut()}>Sign out</button>
       </header>
 
       {message && <div className="banner warning">{message}</div>}

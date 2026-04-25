@@ -48,6 +48,10 @@ export function StartScreen({
   return (
     <main className="panel start">
       {retryBanner && <div className="banner warning">{retryBanner}</div>}
+      <div className="brand-lockup" aria-label="Science Corporation">
+        <span className="science-mark" aria-hidden="true" />
+        <span>Science</span>
+      </div>
       <p className="eyebrow">60-second evaluation</p>
       <h1>BCI bit-rate typing task</h1>
       <p className="lead">
