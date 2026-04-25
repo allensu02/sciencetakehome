@@ -31,16 +31,17 @@ npm install
 
 - Single characters: `N=26`, lowercase `a-z`.
 - 3-char common words: `N=100`, curated common English words.
-- 3-char ergonomic words: `N=100`, common lowercase words selected for low QWERTY typing effort.
-- 3-char ergonomic nonwords: `N=1000`, lowercase nonwords selected for low QWERTY typing effort.
-- 3-char pronounceable nonwords: `N=500`, generated CVC strings.
+- 3-char all words: `N=1567`, all current 3-letter dictionary/frequency-list entries.
+- 3-char ergonomic nonwords: `N=100`, `N=1000`, and `N=16009`, lowercase nonwords selected for low QWERTY typing effort after dictionary and frequency-list exclusion.
 - 5-char common words: `N=1000`, frequency-ordered from `first20hours/google-10000-english`, filtered to lowercase 5-letter entries.
-- 5-char ergonomic words: `N=1000`, selected from the 5-letter `first20hours/google-10000-english` pool by a QWERTY effort model.
-- 5-char ergonomic nonwords: `N=1000`, generated CVCVC-style strings selected for low QWERTY typing effort after dictionary and frequency-list exclusion.
+- 5-char all words: `N=10365`, all current 5-letter dictionary/frequency-list entries.
+- 5-char ergonomic nonwords: `N=1000`, `N=100000`, and `N=11871011`, selected or generated for low QWERTY typing effort after dictionary and frequency-list exclusion.
 
 The homework says "no word-level targets." This implementation treats fixed-length strings drawn i.i.d. uniform from a fixed alphabet, scored only by whole-string exact match, as compliant because the selection sequence has no language-model statistics and no predictive/partial-word credit.
 
 The ergonomic lists are still fixed alphabets sampled uniformly with replacement. They are ranked by a deterministic QWERTY model that rewards home-row use, hand alternation, and inward rolls while penalizing weak fingers, same-finger transitions, and row jumps.
+
+Large ergonomic nonword alphabets are generated from a deterministic alphabet descriptor instead of bundled as full static arrays. The generator maps uniform random indices through an ergonomic character order and rejects excluded real/common words, preserving uniform sampling over the declared alphabet size without shipping millions of strings.
 
 ## Architecture
 

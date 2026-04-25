@@ -35,7 +35,7 @@ export function StartScreen({
     ?? conditionOptions[0].config;
 
   const runAudit = (): void => {
-    const result = runIidAudit(selectedConfig.alphabet);
+    const result = runIidAudit(selectedConfig);
     window.dispatchEvent(new CustomEvent<AuditResult>('audit-result', { detail: result }));
   };
 

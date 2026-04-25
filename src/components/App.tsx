@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { conditionOptions } from '../configs';
+import { alphabetSize } from '../core/alphabet';
 import { SessionEngine, type SessionSnapshot } from '../core/session';
 import { KeyboardHandler } from '../input/KeyboardHandler';
 import { completeUpload, isLocalMode, retryPendingLogs } from '../logging/LogUploader';
@@ -221,7 +222,7 @@ export function App(): JSX.Element {
 
     const counts = engine.getCounts();
     const final: SessionLog['final'] = {
-      N: selectedConfig.alphabet.length,
+      N: alphabetSize(selectedConfig),
       Sc: counts.Sc,
       Si: counts.Si,
       bit_rate_bps: engine.finalBitRate(now)

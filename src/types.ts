@@ -2,9 +2,19 @@ export type InputModality = 'keyboard' | 'voice' | 'head_tracking';
 
 export type RuntimeMode = 'local' | 'remote';
 
+export type GeneratedAlphabetConfig = {
+  kind: 'ergonomic_nonword';
+  length: 3 | 5;
+  size: number;
+  rank_limit: number;
+  char_order: string;
+  excluded_sources: string[];
+};
+
 export type SessionConfig = {
   condition_id: string;
-  alphabet: string[];
+  alphabet?: string[];
+  generated_alphabet?: GeneratedAlphabetConfig;
   input_modality: InputModality;
   scoring: {
     mode: 'exact_match';

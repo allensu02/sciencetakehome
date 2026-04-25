@@ -1,4 +1,4 @@
-import { drawUniform } from './rng';
+import { alphabetSize, drawTarget } from './alphabet';
 import type { BitRatePoint, InputEvent, LoggedInput, SessionConfig, TargetPresentation } from '../types';
 
 export type SessionSnapshot = {
@@ -43,7 +43,7 @@ export class SessionEngine {
   private completed = false;
 
   constructor(config: SessionConfig) {
-    if (config.alphabet.length < 3) {
+    if (alphabetSize(config) < 3) {
       throw new Error('Alphabet size must be at least 3');
     }
     this.config = config;
@@ -183,7 +183,7 @@ export class SessionEngine {
       this.previousTargets.push(this.target);
     }
     this.ensureUpcomingTargets();
-    this.target = this.upcomingTargets.shift() ?? drawUniform(this.config.alphabet);
+    this.target = this.upcomingTargets.shift() ?? drawTarget(this.config);
     this.ensureUpcomingTargets();
     this.targetIndex += 1;
     return {
@@ -199,7 +199,7 @@ export class SessionEngine {
 
   private ensureUpcomingTargets(): void {
     while (this.upcomingTargets.length < 160) {
-      this.upcomingTargets.push(drawUniform(this.config.alphabet));
+      this.upcomingTargets.push(drawTarget(this.config));
     }
   }
 
@@ -215,6 +215,6 @@ export class SessionEngine {
       return 0;
     }
     const netCorrect = Math.max(this.correctSelections - this.incorrectSelections, 0);
-    return Math.log2(this.config.alphabet.length - 1) * netCorrect / elapsedSeconds;
+    return Math.log2(alphabetSize(this.config) - 1) * netCorrect / elapsedSeconds;
   }
 }

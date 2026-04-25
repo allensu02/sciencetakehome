@@ -1,4 +1,6 @@
 import { randomIndex } from '../core/rng';
+import { alphabetSize } from '../core/alphabet';
+import type { SessionConfig } from '../types';
 
 export type AuditResult = {
   draws: number;
@@ -9,25 +11,35 @@ export type AuditResult = {
   maxCount: number;
 };
 
-export function runIidAudit(alphabet: string[], draws = 100_000): AuditResult {
-  const counts = new Array<number>(alphabet.length).fill(0);
+export function runIidAudit(config: SessionConfig, draws = 100_000): AuditResult {
+  const size = alphabetSize(config);
+  const useDenseCounts = size <= 1_000_000;
+  const denseCounts = useDenseCounts ? new Array<number>(size).fill(0) : null;
+  const sparseCounts = useDenseCounts ? null : new Map<number, number>();
   const indices: number[] = [];
 
   for (let index = 0; index < draws; index += 1) {
-    const drawn = randomIndex(alphabet.length);
-    counts[drawn] += 1;
+    const drawn = randomIndex(size);
+    if (denseCounts) {
+      denseCounts[drawn] += 1;
+    } else if (sparseCounts) {
+      sparseCounts.set(drawn, (sparseCounts.get(drawn) ?? 0) + 1);
+    }
     indices.push(drawn);
   }
 
-  const expected = draws / alphabet.length;
-  const chiSquared = counts.reduce((sum, count) => sum + ((count - expected) ** 2) / expected, 0);
+  const expected = draws / size;
+  const counts = denseCounts ?? [...(sparseCounts?.values() ?? [])];
+  const observedChiSquared = counts.reduce((sum, count) => sum + ((count - expected) ** 2) / expected, 0);
+  const unseenCount = denseCounts ? 0 : size - counts.length;
+  const chiSquared = observedChiSquared + unseenCount * expected;
   const lag1Correlation = serialCorrelation(indices);
   const result = {
     draws,
-    alphabetSize: alphabet.length,
+    alphabetSize: size,
     chiSquared,
     lag1Correlation,
-    minCount: Math.min(...counts),
+    minCount: denseCounts ? Math.min(...counts) : 0,
     maxCount: Math.max(...counts)
   };
 
